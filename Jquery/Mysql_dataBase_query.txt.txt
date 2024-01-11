@@ -1,0 +1,16 @@
+CREATE TABLE `employ_data` (
+  `employId` int NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `userName` varchar(45) DEFAULT NULL,
+  `dob` varchar(45) DEFAULT NULL,
+  `gender` varchar(45) DEFAULT NULL,
+  `image` longblob,
+  `skills` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `addDate` varchar(45) DEFAULT NULL,
+  `modifyDate` varchar(45) DEFAULT NULL,
+  `createdBy` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`employId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

@@ -1,0 +1,9 @@
+{"employId":"1000","firstName":"jack","lastName":"Doe","email":"john.doe@example.com","password":"","dob":"1990-01-01","skills":"Java,SQL,HTML,","gender":"male"}
+{"employId":"1000","firstName":"jackk","lastName":"Doe","email":"john.doe@example.com","password":"","dob":"1990-01-01","skills":"Java,SQL,HTML,","gender":"male"}
+{"employId":"1000","firstName":"jackk","lastName":"Doe","email":"john.doe@example.com","password":"","dob":"1990-01-01","skills":"Java,SQL,Spring Boot,HTML,","gender":"male"}
+{"employId":"1022","firstName":"santosh","lastName":"kola","email":"skola@miraclesoft.com","password":"","dob":"1989-12-06","skills":"Java,SQL,Spring Boot,HTML,","gender":"male"}
+{"employId":"1018","firstName":"Sirisha","lastName":"lanka","email":"jlanka1@gmail.com","password":"","dob":"2003-04-11","skills":"Java,SQL,","gender":"female"}
+{"employId":"1020","firstName":"suvarna","lastName":"gudimetla","email":"ffg@gmail.com","password":"","dob":"2023-11-27","skills":"Java,SQL,","gender":"female"}
+{"employId":"1025","firstName":"Divya","lastName":"Dommeti","email":"DDommeti@miraclesoft.com","password":"","dob":"2001-11-26","skills":"Java,SQL,","gender":"female"}
+{"employId":"1013","firstName":"jeevitha","lastName":"kanapareddy","email":"kanapareddy@miraclesoft.com","password":"","dob":"2002-05-20","skills":"Java,SQL,","gender":"female"}
+{"employId":"1000","firstName":"jackk","lastName":"Doe","email":"john.doe@example.com","password":"","dob":"1990-01-01","skills":"Java,SQL,HTML,","gender":"male"}
