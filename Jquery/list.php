@@ -1,7 +1,21 @@
+<?php
+session_start();
+    if (count($_SESSION) == 0) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
+
 <?php include 'layout.php'; ?>
 
 <?php
 // session_start();
+
+// if (empty($_SESSION['passKey'])) {
+//     header("Location: index.html");
+//     exit();
+// }
 
 $passKey=$_SESSION['passKey'];
 

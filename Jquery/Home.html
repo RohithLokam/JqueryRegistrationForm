@@ -231,6 +231,103 @@ const firstName = <?= json_encode($firstName); ?>;
 
 
 
-
 </html>
+<!-- 
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Check If Inputs are Empty using jQuery</title>
+
+<body>
+	<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+	</script>
+	<h1 style="color:green;">
+		GeeksForGeeks
+	</h1>
+
+	<p id="GFG_UP" style="font-size: 15px; font-weight: bold;">
+	</p>
+
+	<input type="file" name="File" id="file" />
+
+	<br><br>
+
+	<button onclick="GFG_Fun()">
+		click here
+	</button>
+
+	<p id="GFG_DOWN" style="color:green; 
+	font-size: 20px; font-weight: bold;">
+	</p>
+
+	<script>
+		let up = document.getElementById('GFG_UP');
+		let down = document.getElementById('GFG_DOWN');
+
+		up.innerHTML = "Click on the button to see"
+			+ " if any file is selected";
+
+		function GFG_Fun() {
+			if ($('#file')[0].files.length === 0) {
+				down.innerHTML = "No files selected";
+			} else {
+				down.innerHTML = "Some file is selected";
+			}
+		}
+	</script>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    
+    <style>
+body {
+  font-family: sans-serif;  /* Set a default font */
+  margin: 0;               /* Remove default margins */
+  padding: 20px;           /* Add some padding for content */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;          /* Remove default top margin for headings */
+}
+
+p {
+  margin-bottom: 15px;     /* Add bottom margin for paragraphs */
+}
+    </style>
+</head>
+<body>
+  <input type="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" id="email">
+  <span id="email-error" class="error-message"></span>
+  
+    <script>
+const emailInput = document.getElementById("email");
+const emailError = document.getElementById("email-error");
+
+emailInput.addEventListener("input", (event) => {
+  if (emailInput.checkValidity()) {
+    emailError.textContent = "";  // Clear any previous error message
+  } else {
+    emailError.textContent = "Please enter a valid email address";
+  }
+});
+
+// Example using a JavaScript library for popups (e.g., SweetAlert2)
+swal({
+  title: "Invalid Email Address",
+  text: "Please enter a valid email address.",
+  icon: "error",
+});
+
+    </script>
+</body>
+</html>

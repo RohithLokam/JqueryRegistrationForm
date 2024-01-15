@@ -1,4 +1,12 @@
 <?php
+session_start();
+    if (count($_SESSION) == 0) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
+<?php
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

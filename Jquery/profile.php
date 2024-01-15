@@ -1,3 +1,10 @@
+<?php
+session_start();
+    if (count($_SESSION) == 0) {
+    header("Location: index.php");
+    exit();
+}
+?>
 
 <?php include 'home.php'; ?>
 
@@ -66,7 +73,7 @@ if (isset($_GET['employId'])) {
             border-radius: 5px;
             background-color: #f2f2f2;
             padding: 20px 27px 30px 27px;
-            margin-top:9%;
+            margin-top:5%;
             margin-bottom:9%;
             z-index: 0;
             position: fixed;
@@ -253,19 +260,19 @@ $image = $_SESSION['image'];
 // echo 'No image available';
 // }
 
-if (!empty($image)) {
-  $imageData = base64_decode($image);
-  $imageType = "data:image/png;base64,";
-  echo '<div class="profile-container">';
-  echo '<img style="max-width:36%; height: 27%;" id="profile-image" class="profile-image" src="' . $imageType . base64_encode($imageData) . '" alt="Profile Image">';
-  echo '<div class="dropdown-content" id="myDropdown">';
-  echo '<a href="profile.html">Profile</a>';
-  echo '<a href="index.php">Logout</a>';
-  echo '</div>';
-  echo '</div>';
-} else { 
-  echo 'No image available';
-}
+// if (!empty($image)) {
+//   $imageData = base64_decode($image);
+//   $imageType = "data:image/png;base64,";
+//   echo '<div class="profile-container">';
+//   echo '<img style="max-width:36%; height: 27%;" id="profile-image" class="profile-image" src="' . $imageType . base64_encode($imageData) . '" alt="Profile Image">';
+//   echo '<div class="dropdown-content" id="myDropdown">';
+//   echo '<a href="profile.html">Profile</a>';
+//   echo '<a href="index.php">Logout</a>';
+//   echo '</div>';
+//   echo '</div>';
+// } else { 
+//   echo 'No image available';
+// }
 
 ?>
 

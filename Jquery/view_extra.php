@@ -66,18 +66,21 @@ if (isset($_GET['employId'])) {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <style>
-          /* #userName,
+          #userName,
         #firstName,
-        #lastName{
+        #lastName,
+        #dob,
+        #male,
+        #female{
             height: 25px;
-width: 250px;
+width: 125px;
 border: 2px solid #3498DB;
 border-radius: 5px;
 padding: 10px;
 margin-bottom: 15px;
 outline: none;
 margin-left: 10px;
-        } */
+        }
         .register {
             text-align: center;
             border-style: solid;
@@ -88,7 +91,7 @@ margin-left: 10px;
             /* background-color: #f2f2f2; */
             background-color: white;
             padding: 20px 27px 30px 27px;
-            margin-top:5%;
+            margin-top:9%;
             margin-bottom:9%;
             z-index: 0;
             position: fixed;
@@ -147,9 +150,9 @@ if (!empty($imageURL)) {
             <br><br>
             <label>User name : </label>
             <input type="text" id="userName" name="userName" placeholder="your user name" maxlength="60" readonly><br><br>
-            <label>First name : </label>
-            <input type="text" id="firstName" name="firstName" placeholder="your first name" maxlength="60" readonly><br><br>
-            <label>Last name : </label>
+            <!-- <label>First name : </label> -->
+            <input type="text" id="firstName" name="firstName" placeholder="your first name" maxlength="60" readonly>
+            <!-- <label>Last name : </label> -->
             <input type="text" id="lastName" name="lastName" placeholder="your last name" maxlength="60" readonly><br><br>
             <label>Dob : </label>
             <input type="date" id="dob" name="dob" placeholder="enter date of birth" required readonly><br>
@@ -170,7 +173,7 @@ if (!empty($imageURL)) {
                 <label for="HTML">HTML</label><br>
             </div><br>
             <label>Email</label>
-            <input style="width:198px" type="text" id="Email" name="Email" placeholder="enter email id" readonly><br>
+            <input type="text" id="Email" name="Email" placeholder="enter email id" readonly><br>
         </form>
     </div>
 

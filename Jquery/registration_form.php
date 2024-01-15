@@ -1,7 +1,21 @@
-<?php include 'layout.php'; ?>
+<?php
+session_start();
+    if (count($_SESSION) == 0) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
+<?php include 'home.php'; ?>
 
 <!DOCTYPE html>
 <html>
+<?php
+if (empty($_SESSION['passKey'])) {
+    header("Location: index.php");
+    exit();
+}
+?>
 
 <head>
     
@@ -99,7 +113,8 @@
             <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="7%" height="9%" style="margin-left: 54%; margin-top:-9.9%; display:inline; vertical-align: middle;" id="tp">
             <p id="pass"></p>
             <label>Profile : </label>
-            <input type="file" id="image" name="image" accept="image/*" ><br><br>
+            <input type="file" id="image" name="image" accept="image/*" ><br>
+            <p id="imag"></p>
             <button type="reset" id="clear" onclick="clearErrors()">Reset</button>
             <button type="submit" value="Submit">Submit</button>
         </form>
@@ -160,9 +175,10 @@ function generateEmail() {
             emailValidation();
             passwordValidation();
             genderValidation();
+            imageValidation();
 
             console.log(count);
-            if (count === 7) {
+            if (count === 8) {
                 return true;
 
 } 
@@ -200,6 +216,9 @@ function generateEmail() {
         $("#clear").on("click", function() {
             clearErrors();
         });
+        $("#image").on("click",function() {
+            imageValidation();
+        })
         
     });
 
@@ -321,6 +340,21 @@ function passwordValidation() {
 }
 
 
+    function imageValidation() {
+        // let imageInput = $("#image").val();
+		let imageElement = $("#imag");
+
+
+			if ($('#image')[0].files.length === 0) {
+				imageElement.html("No image selected");
+			} else {
+                count++;
+				imageElement.html("");
+            }
+
+    }
+
+
 
         function clearErrors() {
     $("#fname").html("");
@@ -330,6 +364,7 @@ function passwordValidation() {
     $("#email").html("");
     $("#pass").html("");
     $("#genderError").html("");
+    $("#imag").html("");
 }
 
     </script>
