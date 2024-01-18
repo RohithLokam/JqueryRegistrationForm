@@ -5,8 +5,31 @@ package com.Rover.Insert;
 public class Insert {
 	
 	int id;
+	String fname;
+	String lname;
 	String name;
 	int marks;
+	String password;
+	
+	
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public int getId() {
 		return id;
 	}

@@ -41,6 +41,7 @@ if (isset($_GET['employId'])) {
         $dob= $user['dob'];
         $skills= $user['skills'];
         $gender= $user['gender'];
+        $userName= $user['userName'];
 
     } else {
         echo "No data found for the specified ID.";
@@ -67,7 +68,7 @@ if (isset($_GET['employId'])) {
             border-radius: 5px;
             background-color: #f2f2f2;
             padding: 14px 27px 18px 27px;
-            margin-top: 5.76% ;
+            margin-top: 3.6% ;
             margin-bottom:9%;
             z-index: 0;
             position: fixed;
@@ -132,7 +133,10 @@ if (isset($_GET['employId'])) {
         <h2 style="color: rgb(177, 9, 73);"> Employ Details Update </h2>
         <form id="registrationForm" action="update_insert.php" method="POST" onsubmit="return validateForm(event)"   enctype="multipart/form-data">
             <label>Employ Id : </label>
-            <input type="text" id="employId" name="employId" placeholder="enter employ id" readonly style="background-color: black;"><br><br>
+            <input type="text" id="employId" name="employId" placeholder="enter employ id" readonly ><br><br>
+            <label>User name : </label>
+            <input type="text" id="userName" name="userName" placeholder="enter user name" readonly>
+            <p id="uname"></p>
             <label>First name : </label>
             <input type="text" id="firstName" name="firstName" placeholder="enter first name" maxlength="66">
             <p id="fname"></p>
@@ -179,6 +183,7 @@ if (isset($_GET['employId'])) {
 
 const employId = <?= json_encode($employId); ?>;
     const dob = <?= json_encode($dob); ?>;
+    const userName = <?= json_encode($userName); ?>;
     const firstName = <?= json_encode($firstName); ?>;
     const lastName = <?= json_encode($lastName); ?>;
     const email = <?= json_encode($email); ?>;
@@ -190,6 +195,8 @@ $("#lastName").val(lastName);
 $("#Email").val(email);
 $("#dob").val(dob);
 $("#employId").val(employId);
+$("#userName").val(userName);
+
 
 const genderElement = $("#" + gender);
 if (genderElement.length) {

@@ -7,7 +7,7 @@ session_start();
 ?>
 
 <?php
-session_start();
+// session_start();
 $otpp=$_SESSION['otp'];
 // echo "  $otpp  ";
 
@@ -117,14 +117,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   .box {
-    width: 300px;
+    width: 350px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     text-align: center;
-    margin-left: 9%;
-    margin-right: 9%;
+    margin-left: 5%;
+    margin-right: 5%;
   }
 
   .title {
@@ -196,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <p><h1>Hubble - Miracle's Portal for</h1></p>
           <p><h1>Enterprise Resource</h1></p>
           <p><h1>Management</h1></p>
-          <p>© 2024 Miracle Software Systems, Inc.</p>
+          <p style="color:white;">© 2024 Miracle Software Systems, Inc.</p>
         </div>
       </div>
     <div class="box">

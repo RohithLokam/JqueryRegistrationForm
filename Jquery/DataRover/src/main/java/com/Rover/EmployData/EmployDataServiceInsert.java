@@ -1,5 +1,8 @@
 package com.Rover.EmployData;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,19 +22,21 @@ public class EmployDataServiceInsert {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	public Map<String, Object> insertEmployData(EmployData employData){
+	public Map<String, Object> register(byte[] fileData, String fileName,String firstName,String lastName, String email, String password, String dob, String skills, String gender){
+        BCryptPasswordEncoder bcrypt=new BCryptPasswordEncoder();
+
 		Map<String, Object> response=new HashMap<String, Object>();
 		try {
 			int count=0;
-			String firstName=employData.getFirstName();
-			String lastName=employData.getLastName();
+//			String firstName=employData.getFirstName();
+//			String lastName=employData.getLastName();
 			String userName=username;
-			String dob=employData.getDob();
-			String gender=employData.getGender();
-			String skills=employData.getSkills();
-			String email=employData.getEmail();
-			String password=employData.getPassword();
-			byte[] image=employData.getImage();
+//			String dob=employData.getDob();
+//			String gender=employData.getGender();
+//			String skills=employData.getSkills();
+//			String email=employData.getEmail();
+//			String password=employData.getPassword();
+//			byte[] image=employData.getImage();
 
 
 			String nameRegex="^[a-zA-Z]+$";
@@ -79,9 +85,27 @@ public class EmployDataServiceInsert {
 			String modifyDate=addDate;
 			String createdBy=userName;
 			if(count==5) {
+				String image_name=userName;
+				
+	            String fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+	            
+	            fileName = image_name + fileExtension;
+
+	            String image_path = "C:\\Users\\mcconf\\Downloads\\employ_images\\" + fileName;
+
+	            Files.write(Path.of(image_path), fileData, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+	            
+//	            filePath = "file:///C:/Users/mcconf/Downloads/employ_images/" + fileName;
+
+	   		
+
+	   			String encryprtpassword=bcrypt.encode(password);
+
 			String sql="insert into employ_data (firstName,lastName,userName,dob,gender,image,skills,email,password,addDate,modifyDate,createdBy)values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			int i=jdbcTemplate.update(sql,firstName,lastName,userName,dob,gender,image,skills,email,password,addDate,modifyDate,createdBy);
+			int i=jdbcTemplate.update(sql,firstName,lastName,userName,dob,gender,image_path,skills,email,encryprtpassword,addDate,modifyDate,createdBy);
 			if(i>0) {
+	            jdbcTemplate.update("INSERT INTO files (userName,file_name) VALUES (?,?)", userName,image_path);
+
 				response.put("success", true);
 				response.put("data", "");
 				response.put("message", "Data Inserted");

@@ -1,13 +1,20 @@
 package com.Rover.EmployData;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +29,7 @@ public class EmployDataService {
 	
 	public Map<String,Object> login(EmployData employData){
 		String passKey="Rohit";
+        BCryptPasswordEncoder bcrypt=new BCryptPasswordEncoder();
 		Map<String,Object> response=new HashMap<String,Object>();
 		try {
 			String userName=employData.getUserName();
@@ -29,33 +37,64 @@ public class EmployDataService {
 			System.out.println(userName);
 			System.out.println(password);
 
-			String sql="select userName,password from employ_data where userName=? and password=?";
 			
-			String seequel="select employId,firstName,lastName,image,password from employ_data where userName=? and password=?";
+			String sql="select employId,firstName,lastName,image,password from employ_data where userName=?";
 			
 			List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+			result=jdbcTemplate.queryForList(sql,userName);
+			System.out.println("condition");
+			 Map<String, Object> userdata = result.get(0);
+	         String encryptPassword = (String) userdata.get("password");
 			
-			result=jdbcTemplate.queryForList(sql,userName,password);
-			System.out.println(result);
-			if(result.isEmpty()) {
+			if(bcrypt.matches(password, encryptPassword)) {
+				System.out.println("condition1");
+				System.out.println(password);
 				response.put("success", false);
 				response.put("message", "invalid credentials");
 				response.put("data", null);
 			}else {
-				List<Map<String,Object>> result1=new ArrayList<Map<String,Object>>();
-				result1=jdbcTemplate.queryForList(seequel,userName,password);
-				for(Map<String,Object> map: result1) {
+				System.out.println("condition2");
+				
+				 Map<String, Object> userData = result.get(0);
+		            String imagePath = (String) userData.get("image");
+		            Path path = Paths.get(imagePath);
+		            byte[] imageBytes = Files.readAllBytes(path);
+//		            String base64Image = convertImageToBase64(imagePath);
+		            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+		            System.out.println("imagePath : "+imagePath);
+		            for(Map<String,Object> map: result) {
 					map.put("passKey", passKey);
+					map.put("image", base64Image);
 				}
+				
 				response.put("success", true);
 				response.put("message", "credentials are valid");
-				response.put("data", result1);
+				response.put("data", result);
 			}
+				
 		}catch(Exception e) {
 			response.put("message", "error :"+e);
 		}
 		return response;
 	}
+	
+//	private String convertImageToBase64(String imagePath) {
+//	    try {
+//	        if (imagePath != null) {
+//	            Path path = Paths.get(imagePath);
+//	            byte[] imageBytes = Files.readAllBytes(path);
+//	            return Base64.getEncoder().encodeToString(imageBytes);
+//	        } else {
+//	        	System.out.println("image is null");
+//	            return null;
+//	        }
+//	    } catch (IOException e) {
+//	        e.printStackTrace();
+//	        return null;
+//	    }
+//	}
+
 
 
 
@@ -97,11 +136,23 @@ public class EmployDataService {
 		String sql = "select * from employ_data where employId=?";
 		List<Map<String, Object>> resultData = jdbcTemplate.queryForList(sql, id);
 		if(result.size()>0) {
+
 			result.put("success", true);
 		}else {
 			result.put("success", false);
 		}
+		 Map<String, Object> userData = resultData.get(0);
+         String imagePath = (String) userData.get("image");
+         Path path = Paths.get(imagePath);
+         byte[] imageBytes = Files.readAllBytes(path);
+         String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+         System.out.println("imagePath : "+imagePath);
+         for(Map<String,Object> map: resultData) {
+			map.put("image", base64Image);
+		}
 		result.put("data", resultData); 
+		System.out.println(resultData);
 	}
 		catch(Exception e) {
 			result.put("message", "error: "+e.getMessage());
@@ -120,29 +171,38 @@ public class EmployDataService {
 	//	}
 
 
-	public Map<String, Object> update(EmployData edp){
+	public Map<String, Object> update(byte[] fileData, String fileName,int employId, String userName, String firstName,String lastName, String email, String dob, String skills, String gender){
 		Map<String, Object> response=new HashMap<String, Object>();
 		try {
-			int employId=edp.getEmployId();
-			String firstName=edp.getFirstName();
-			String lastName=edp.getLastName();
-
-
-			String dob=edp.getDob();
-			String gender=edp.getGender();
-			String skills=edp.getSkills();
-			String email=edp.getEmail();
+//			int employId=edp.getEmployId();
+//			String firstName=edp.getFirstName();
+//			String lastName=edp.getLastName();
+//
+//
+//			String dob=edp.getDob();
+//			String gender=edp.getGender();
+//			String skills=edp.getSkills();
+//			String email=edp.getEmail();
 			LocalDate date=LocalDate.now();
 			String addDate=date.toString();
 			String modifyDate=addDate;
 			String createdBy=firstName.substring(0,1)+lastName;
-			byte[] image=edp.getImage();
-			System.out.println(image);
+			String image_name=userName;
+			
+            String fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+            
+            fileName = image_name + fileExtension;
 
+            String image_path = "C:\\Users\\mcconf\\Downloads\\employ_images\\" + fileName;
+
+            Files.write(Path.of(image_path), fileData, StandardOpenOption.CREATE, StandardOpenOption.WRITE);	
+            System.out.println(image_path);
 
 			String sql="update employ_data set firstName=?,lastName=?,dob=?,gender=?,skills=?,image=?,email=?,modifyDate=?,createdBy=? where employId=?";
-			int i=jdbcTemplate.update(sql,firstName,lastName,dob,gender,skills,image,email,modifyDate,createdBy,employId);
+			int i=jdbcTemplate.update(sql,firstName,lastName,dob,gender,skills,image_path,email,modifyDate,createdBy,employId);
 			if(i>0) {
+//	            jdbcTemplate.update("update  files set userName=?,file_name=? where employId=?", employId,userName,image_path);
+
 				String seequel="select firstName,lastname,image from employ_data where employId=?";
 				List<Map<String,Object>> result=jdbcTemplate.queryForList(seequel,employId);
 				response.put("data", result);
@@ -244,6 +304,37 @@ public class EmployDataService {
 		return response;
 	}
 	
+	
+	 public Map<String, Object> saveFile(byte[] fileData, String fileName, EmployData employData) {
+	        Map<String, Object> response = new HashMap<>();
+
+	        try {
+	        	String ownerName=employData.getUserName();
+//	        	String name=employData.getFirstName();
+//	        	System.out.println(name);
+	            String fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+	            
+	            fileName = ownerName + fileExtension;
+
+	            String filePath = "C:\\Users\\mcconf\\Downloads\\employ_images\\" + fileName;
+
+	            Files.write(Path.of(filePath), fileData, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+	            
+//	            filePath = "file:///C:/Users/mcconf/Downloads/employ_images/" + fileName;
+
+
+	            jdbcTemplate.update("INSERT INTO files (file_name) VALUES (?)", filePath);
+
+	            response.put("message", "File uploaded successfully");
+	            response.put("success", true);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            response.put("message", "Error uploading the file");
+	            response.put("success", false);
+	        }
+
+	        return response;
+	    }
 	
 	
 	

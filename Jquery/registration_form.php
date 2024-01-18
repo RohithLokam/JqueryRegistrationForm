@@ -75,7 +75,7 @@ if (empty($_SESSION['passKey'])) {
         <h2 style="color: rgb(177, 9, 73);"> Registrationn Form </h2>
 
 
-            <form id="registrationForm" action="registration_form_insert.php" method="POST" onsubmit="return validateForm(event)" enctype="multipart/form-data">
+            <form id="registrationForm" action="registration_form_insert_extra.php" method="POST" onsubmit="return validateForm(event)" enctype="multipart/form-data">
 
             <br>
             <label>First name : </label>
@@ -110,7 +110,7 @@ if (empty($_SESSION['passKey'])) {
             <p id="email"></p>
             <label>Password : </label>
             <input type="text" id="password" class="form-control" name="password" placeholder="enter Password" ><br>
-            <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="7%" height="9%" style="margin-left: 54%; margin-top:-9.9%; display:inline; vertical-align: middle;" id="tp">
+            <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="7%" height="9%" style="margin-left: 54%; margin-top:-6.3%; display:inline; vertical-align: middle;" id="tp">
             <p id="pass"></p>
             <label>Profile : </label>
             <input type="file" id="image" name="image" accept="image/*" ><br>

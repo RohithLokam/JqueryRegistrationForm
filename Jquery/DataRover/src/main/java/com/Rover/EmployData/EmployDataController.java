@@ -1,5 +1,7 @@
 package com.Rover.EmployData;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 
@@ -24,17 +27,17 @@ public class EmployDataController {
 	EmployDataServiceInsert employDataServiceInsert; 
 	@Autowired
 	EmploySearch employSearch;
-	
 	@Autowired
 	SendMail sm;
 
 	@PostMapping("employ_data")
-	public Map<String, Object> datainsertion(@RequestBody EmployData employData){
-		return employDataServiceInsert.insertEmployData(employData);
+	public Map<String, Object> registration(@RequestParam("file") MultipartFile file, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("dob") String dob, @RequestParam("skills") String skills, @RequestParam("gender") String gender) throws IOException{
+		return employDataServiceInsert.register(file.getBytes(), file.getOriginalFilename(), firstName, lastName, email, password, dob, skills, gender);
 	}
+	
 	@PutMapping("employ_data")
-	public Map<String, Object> updation(@RequestBody EmployData employDataUpdate){	
-		return employDataService.update(employDataUpdate);
+	public Map<String, Object> updation(@RequestParam("file") MultipartFile file,  @RequestParam("employId") int employId, @RequestParam("userName") String userName, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("email") String email, @RequestParam("dob") String dob, @RequestParam("skills") String skills, @RequestParam("gender") String gender) throws IOException{
+		return employDataService.update(file.getBytes(), file.getOriginalFilename(), employId, userName, firstName, lastName, email, dob, skills, gender);
 	}
 	@GetMapping("employ_data/{key}")
 	public Map<String, Object> listing(@PathVariable String key){
@@ -44,8 +47,6 @@ public class EmployDataController {
 	public Map<String, Object> selection(@RequestParam int employId){	
 		return employDataService.view(employId);
 	}
-	
-	
 	@GetMapping("user_name_check/{firstName}/{lastName}")
 	public Map<String, String> userNameChecking(@PathVariable String firstName,@PathVariable String lastName){
 		return employDataServiceInsert.UserNameCheck(firstName,lastName);
@@ -73,6 +74,26 @@ public class EmployDataController {
 	@PostMapping("reset_password")
 	public Map<String,Object> reset_password(@RequestBody EmployData employData) {
 		return employDataService.resetPassword(employData);
+	}
+//	@PostMapping("files")
+//    public Map<String, Object> handleFileUpload(@RequestPart("file") MultipartFile file) throws IOException {
+//        return employDataService.saveFile(file.getBytes(), file.getOriginalFilename());
+//    }
+	@PostMapping("files")
+	public Map<String, Object> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestBody EmployData employData) {
+	    try {
+	        return employDataService.saveFile(file.getBytes(), file.getOriginalFilename(), employData);
+	    } catch (IOException e) {
+	        return handleFileUploadError(e);
+	    }
+	}
+
+	private Map<String, Object> handleFileUploadError(Exception e) {
+	    e.printStackTrace(); 
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("message", "Error uploading the file");
+	    response.put("success", false);
+	    return response;
 	}
 	
 }

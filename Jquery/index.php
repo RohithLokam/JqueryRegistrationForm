@@ -1,4 +1,63 @@
 <?php
+// if (isset($_GET['success']) && $_GET['success'] === 'true') {
+
+
+// echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+// echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+// echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+
+// echo "<div style='margin-top:5%; z-index:5;' class='alert alert-warning'>";
+// echo "<strong>Success!</strong> Invalid Credentials!";
+// echo "</div>";
+
+// echo "<script>";
+// echo "$(document).ready(function() {"; 
+// echo "  setTimeout(function() {";
+// echo "    $('.alert').remove();";
+// echo "  }, 3000);";
+// echo "});";
+// echo "</script>";
+// }
+
+
+if (isset($_GET['success']) && $_GET['success'] === 'true') {
+    echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+    echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+    echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+
+    echo "<style>";
+    echo "  .custom-alert {";
+    echo "    position: fixed;";
+    echo "    top: 0;";
+    echo "    left: 50%;";
+    echo "    width: 100%;";
+    echo "    text-align: left;";
+    echo "    transform: translateX(-50%);";
+    echo "    z-index: 1050;"; 
+    echo "  }";
+    echo "</style>";
+
+    echo "<script>";
+    echo "$(document).ready(function() {";
+    echo "  var alertMessage = 'Invalid Credentials!';";
+    echo "  var alertElement = $('<div class=\"alert alert-warning custom-alert\">').html('<strong>Success!</strong> ' + alertMessage);";
+    echo "  $('body').append(alertElement);";
+    echo "  setTimeout(function() {";
+    echo "    alertElement.remove();";
+    echo "  }, 2007);";
+    echo "});";
+    echo "</script>";
+    echo "<script>";
+echo "setTimeout(function() {";
+echo "  window.location.href = 'index.php?success=false';";
+echo "}, 2007);";
+echo "</script>";
+}
+
+
+?>
+
+<?php
 session_start();
 
 
@@ -47,16 +106,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       
            
-             echo "<script>";
-             echo "alert(' Login successful!: ');";
-             echo "window.location.href='home.php';";
-             echo "</script>";
+            //  echo "<script>";
+            //  echo "alert(' Login successful!: ');";
+            //  echo "window.location.href='home.php';";
+            //  echo "</script>";
+//             echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+// echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+// echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+
+//              echo "<div class='alert alert-success'>";
+// echo "<strong>Success!</strong> Login successful!";
+// echo "</div>";
+// echo "<script>";
+// echo "setTimeout(function() { window.location.href='home.php'; }, 5004);";s
+// echo "</script>";
+
+// if (basename($_SERVER['PHP_SELF']) === 'home.php') {
+//     echo "<div class='alert alert-success'>";
+//     echo "<strong>Success!</strong> Login successful!";
+//     echo "</div>";
+// }
+
+header("Location: home.php?login_success=true");
+exit();
+
+
                 exit();
                 } else {
-                    echo "<script>";
-                    echo "alert('Invalid credentials!');";
-                    echo "window.location.history();";
-                    echo "</script>";   
+                    // echo "<script>";
+                    // echo "alert('Invalid credentials!');";
+                    // echo "window.location.history();";
+                    // echo "</script>";   
+
+                    header("Location: index.php?success=true");
+                    exit();
+
+
                      }
     }
 }
@@ -112,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   border-radius: 4px;
 }
 
-.btn :hover {
+.btn:hover {
   opacity: 0.8;
 }
 

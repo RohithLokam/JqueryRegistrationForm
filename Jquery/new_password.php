@@ -7,7 +7,7 @@ session_start();
 ?>
 
 <?php
-session_start();
+// session_start();
 $Email = $_SESSION['Email'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            
              echo "<script>";
              echo "alert(' Password updated  successful!');";
-             echo "window.location.href='index.php';";
+             echo "window.location.href='logout.php';";
              echo "</script>";
                 exit();
                 } else {
@@ -74,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+   
     <title>PeopleConnect</title>
     <style>
    
@@ -217,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="9%" height="14%" style="z-index:3; margin-left: 88%; margin-top:-16%; display:inline; vertical-align: middle;" id="tpp">
             <p style="color:red;" id="passwd"></p>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button  type="submit" class="btn btn-primary">Update</button>
             </div>
             <!-- <p class="text-center small"> <a href="otp_sending.php">Forgot Password</a></p> -->
         </form>
@@ -287,6 +288,7 @@ togglePassword1.addEventListener('click', function () {
     }
 }
 function validPasswords() {
+   
         var newPassword = $('#userName').val();
         var confirmPassword = $('#password').val();
         if(newPassword==="" && confirmPassword===""){

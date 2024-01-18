@@ -1,10 +1,5 @@
-<?php
-session_start();
-    if (count($_SESSION) == 0) {
-    header("Location: index.php");
-    exit();
-}
-?>
+
+
 
 <?php
 // session_start();
@@ -189,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
       </div>
     <div class="box">
-    <form   action="" method="post">
+    <form   action="" method="POST">
 
 
   <div class="title">OTP</div>

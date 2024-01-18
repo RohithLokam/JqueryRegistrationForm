@@ -21,6 +21,16 @@ public class InsertController {
 		return insertService.insert(insert);
 	}
 	
+	@PostMapping("encrypt")
+	public Map<String, String> encryption(@RequestBody Insert insert) {
+		return insertService.secure(insert);
+	}
+	
+	@PostMapping("loggedin")
+	public Map<String, String> authentication(@RequestBody Insert insert) {
+		return insertService.login(insert);
+	}
+	
 
 
 }
