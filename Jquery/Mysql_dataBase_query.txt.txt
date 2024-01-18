@@ -14,3 +14,10 @@ CREATE TABLE `employ_data` (
   `createdBy` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employId`,`userName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `files` (
+  `employId` int NOT NULL AUTO_INCREMENT,
+  `userName` varchar(45) DEFAULT NULL,
+  `file_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`employId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
