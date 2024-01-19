@@ -1,12 +1,4 @@
 <?php
-session_start();
-    if (count($_SESSION) == 0) {
-    header("Location: index.php");
-    exit();
-}
-?>
-
-<?php
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -22,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $skills = implode(',', $skillsArray);    
 
+   
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] === 0) {
         $file = $_FILES["image"];
         $fileName = htmlspecialchars($file["name"]);
@@ -41,35 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => false, 'message' => 'File size exceeds the maximum allowed limit.']);
             exit();
         }
-
-        $imageContent = file_get_contents($fileTmpName);
     } else {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'File upload failed. Please select a valid image file.']);
         exit();
     }
 
+    $api_url = 'http://172.17.13.138:8080/employ_data';
+    $ch = curl_init($api_url);
 
- 
-// if (isset($_FILES["image"]) && $_FILES["image"]["error"] === 0) {
-//     $file = $_FILES["image"];
-//     $fileName = $file["name"];
-//     $fileTmpName = $file["tmp_name"];
-//     $fileSize = $file["size"];
-//     $fileError = $file["error"];
-    
-//     $imageContent = file_get_contents($fileTmpName);
-//     } else {
-//         echo "<script>";
-//         echo "alert('File upload failed. Please select a valid image file.');";
-//         echo "</script>";
-//     exit();
-//     }
-    
-
-
-    
-    $postData = json_encode([
+    $postData = [
         'firstName' => $firstName,
         'lastName' => $lastName,
         'email' => $email,
@@ -77,17 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'dob' => $dob,
         'skills' => $skills,
         'gender' => $gender,
-        'image' => base64_encode($imageContent)
-    ]);
+        'file' => new CURLFile($fileTmpName, $file['type'], $file['name'])
 
-    $api_url = 'http://172.17.13.138:8080/employ_data';
-    $ch = curl_init($api_url);
+    ];
 
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+        CURLOPT_HTTPHEADER     => ['Content-Type: multipart/form-data'],
         CURLOPT_POST           => 1,
         CURLOPT_POSTFIELDS     => $postData,
+        CURLOPT_SAFE_UPLOAD    => true,  
+        CURLOPT_FOLLOWLOCATION => true, 
     ]);
 
     $response = curl_exec($ch);
@@ -97,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($decoded_response && isset($decoded_response['success'])) {
         if ($decoded_response['success']) {
-            header("Location: home.php");
+            header("Location: home.php?register_success=true");
             exit();
         } else {
             $message = isset($decoded_response['message']) ? $decoded_response['message'] : 'Failed to process the request';

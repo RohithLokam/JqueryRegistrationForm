@@ -13,11 +13,22 @@ CREATE TABLE `employ_data` (
   `modifyDate` varchar(45) DEFAULT NULL,
   `createdBy` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`employId`,`userName`)
-) ENGINE=InnoDB AUTO_INCREMENT=1006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
 
 CREATE TABLE `files` (
   `employId` int NOT NULL AUTO_INCREMENT,
   `userName` varchar(45) DEFAULT NULL,
   `file_name` varchar(255) NOT NULL,
   PRIMARY KEY (`employId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `testing` (
+  `employId` int NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `userName` varchar(45) NOT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(189) NOT NULL,
+  PRIMARY KEY (`employId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

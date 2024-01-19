@@ -25,77 +25,61 @@ public class EmployDataService {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
+	 public Map<String, Object> login(EmployData employData) {
+	        String passKey = "Rohit";
+	        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+	        Map<String, Object> response = new HashMap<>();
+
+	        try {
+	            String userName = employData.getUserName();
+	            String password = employData.getPassword();
+	            System.out.println(userName);
+	            System.out.println(password);
+
+	            String sql = "select employId, firstName, lastName, image, password from employ_data where userName=?";
+
+	            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, userName);
+
+	            if (!result.isEmpty()) {
+	                Map<String, Object> userData = result.get(0);
+	                String encryptPassword = (String) userData.get("password");
+
+	                if (bcrypt.matches(password, encryptPassword)) {
+	                    System.out.println("condition2");
+
+	                    String imagePath = (String) userData.get("image");
+	                    Path path = Paths.get(imagePath);
+	                    byte[] imageBytes = Files.readAllBytes(path);
+	                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+	                    System.out.println("imagePath: " + imagePath);
+	                    for (Map<String, Object> map : result) {
+	                        map.put("passKey", passKey);
+	                        map.put("image", base64Image);
+	                    }
+
+	                    response.put("success", true);
+	                    response.put("message", "credentials are valid");
+	                    response.put("data", result);
+	                } else {
+	                    System.out.println("condition1");
+	                    System.out.println(password);
+	                    response.put("success", false);
+	                    response.put("message", "invalid credentials");
+	                    response.put("data", null);
+	                }
+	            } else {
+	                response.put("success", false);
+	                response.put("message", "user not found");
+	                response.put("data", null);
+	            }
+	        } catch (Exception e) {
+	            response.put("message", "error: " + e);
+	        }
+	        return response;
+	    }
 	
 	
-	public Map<String,Object> login(EmployData employData){
-		String passKey="Rohit";
-        BCryptPasswordEncoder bcrypt=new BCryptPasswordEncoder();
-		Map<String,Object> response=new HashMap<String,Object>();
-		try {
-			String userName=employData.getUserName();
-			String password=employData.getPassword();
-			System.out.println(userName);
-			System.out.println(password);
-
-			
-			String sql="select employId,firstName,lastName,image,password from employ_data where userName=?";
-			
-			List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
-			result=jdbcTemplate.queryForList(sql,userName);
-			System.out.println("condition");
-			 Map<String, Object> userdata = result.get(0);
-	         String encryptPassword = (String) userdata.get("password");
-			
-			if(bcrypt.matches(password, encryptPassword)) {
-				System.out.println("condition1");
-				System.out.println(password);
-				response.put("success", false);
-				response.put("message", "invalid credentials");
-				response.put("data", null);
-			}else {
-				System.out.println("condition2");
-				
-				 Map<String, Object> userData = result.get(0);
-		            String imagePath = (String) userData.get("image");
-		            Path path = Paths.get(imagePath);
-		            byte[] imageBytes = Files.readAllBytes(path);
-//		            String base64Image = convertImageToBase64(imagePath);
-		            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-		            System.out.println("imagePath : "+imagePath);
-		            for(Map<String,Object> map: result) {
-					map.put("passKey", passKey);
-					map.put("image", base64Image);
-				}
-				
-				response.put("success", true);
-				response.put("message", "credentials are valid");
-				response.put("data", result);
-			}
-				
-		}catch(Exception e) {
-			response.put("message", "error :"+e);
-		}
-		return response;
-	}
-	
-//	private String convertImageToBase64(String imagePath) {
-//	    try {
-//	        if (imagePath != null) {
-//	            Path path = Paths.get(imagePath);
-//	            byte[] imageBytes = Files.readAllBytes(path);
-//	            return Base64.getEncoder().encodeToString(imageBytes);
-//	        } else {
-//	        	System.out.println("image is null");
-//	            return null;
-//	        }
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	        return null;
-//	    }
-//	}
-
-
 
 
 	public Map<String, String> insertEmployData(EmployData employData){
@@ -201,7 +185,7 @@ public class EmployDataService {
 			String sql="update employ_data set firstName=?,lastName=?,dob=?,gender=?,skills=?,image=?,email=?,modifyDate=?,createdBy=? where employId=?";
 			int i=jdbcTemplate.update(sql,firstName,lastName,dob,gender,skills,image_path,email,modifyDate,createdBy,employId);
 			if(i>0) {
-//	            jdbcTemplate.update("update  files set userName=?,file_name=? where employId=?", employId,userName,image_path);
+	            jdbcTemplate.update("update  files set file_name=? where employId=?", image_path,employId);
 
 				String seequel="select firstName,lastname,image from employ_data where employId=?";
 				List<Map<String,Object>> result=jdbcTemplate.queryForList(seequel,employId);
@@ -282,14 +266,17 @@ public class EmployDataService {
 	}
 	
 	public Map<String, Object> resetPassword(EmployData edp){
+        BCryptPasswordEncoder bcrypt=new BCryptPasswordEncoder();
 		Map<String, Object> response=new HashMap<String, Object>();
 		try {
 			String password=edp.getPassword();
 			int employId=edp.getEmployId();
 
 			String sql="update employ_data set password=? where employId=?";
-			int i=jdbcTemplate.update(sql,password,employId);
+   			String encryprtpassword=bcrypt.encode(password);
+			int i=jdbcTemplate.update(sql,encryprtpassword,employId);
 			if(i>0) {
+				jdbcTemplate.update("update testing set password=? where employId=?",password,employId);
 				response.put("success", true);
 				response.put("message", "Password updated successfully");
 			}else {

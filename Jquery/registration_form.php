@@ -75,7 +75,7 @@ if (empty($_SESSION['passKey'])) {
         <h2 style="color: rgb(177, 9, 73);"> Registrationn Form </h2>
 
 
-            <form id="registrationForm" action="registration_form_insert_extra.php" method="POST" onsubmit="return validateForm(event)" enctype="multipart/form-data">
+            <form id="registrationForm" action="registration_form_insert.php" method="POST" onsubmit="return validateForm(event)" enctype="multipart/form-data">
 
             <br>
             <label>First name : </label>

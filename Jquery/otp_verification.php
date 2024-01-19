@@ -5,6 +5,78 @@ session_start();
     exit();
 }
 ?>
+<?php
+if (isset($_GET['otp_sending_success']) && $_GET['otp_sending_success'] === 'true') {
+
+
+  echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+  echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+  echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+  
+  echo "<style>";
+  echo "  .custom-alert {";
+  echo "    position: fixed;";
+  echo "    top: 3%;";
+  echo "    left: 50%;";
+  echo "    width: 100%;";
+  echo "    text-align: left;";
+  echo "    transform: translateX(-50%);";
+  echo "    z-index: 1050;"; 
+  echo "  }";
+  echo "</style>";
+
+  echo "<script>";
+  echo "$(document).ready(function() {";
+  echo "  var alertMessage = 'OTP Sending successfully!';";
+  echo "  var alertElement = $('<div class=\"alert alert-success custom-alert\">').html('<strong>Success!</strong> ' + alertMessage);";
+  echo "  $('body').append(alertElement);";
+  echo "  setTimeout(function() {";
+  echo "    alertElement.remove();";
+  echo "  }, 2007);";
+  echo "});";
+  echo "</script>";
+  echo "<script>";
+echo "setTimeout(function() {";
+echo "  window.location.href = 'otp_verification.php?success=false';";
+echo "}, 2007);";
+echo "</script>";
+}
+else if (isset($_GET['otp_verified_success']) && $_GET['otp_verified_success'] === 'true') {
+
+
+  echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+  echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+  echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+  
+  echo "<style>";
+  echo "  .custom-alert {";
+  echo "    position: fixed;";
+  echo "    top: 3%;";
+  echo "    left: 50%;";
+  echo "    width: 100%;";
+  echo "    text-align: left;";
+  echo "    transform: translateX(-50%);";
+  echo "    z-index: 1050;"; 
+  echo "  }";
+  echo "</style>";
+
+  echo "<script>";
+  echo "$(document).ready(function() {";
+  echo "  var alertMessage = 'Invalid OTP!';";
+  echo "  var alertElement = $('<div class=\"alert alert-warning custom-alert\">').html('<strong>Failure!</strong> ' + alertMessage);";
+  echo "  $('body').append(alertElement);";
+  echo "  setTimeout(function() {";
+  echo "    alertElement.remove();";
+  echo "  }, 2007);";
+  echo "});";
+  echo "</script>";
+  echo "<script>";
+echo "setTimeout(function() {";
+echo "  window.location.href = 'otp_verification.php?success=false';";
+echo "}, 2007);";
+echo "</script>";
+}
+?>
 
 <?php
 // session_start();
@@ -41,20 +113,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data = json_decode($result, true);
 
 
-        
-
-      
+            header("Location: new_password.php?otp_verified_success=true");
+            exit();
            
-             echo "<script>";
-             echo "alert(' OTP Verified successfully!');";
-             echo "window.location.href='new_password.php';";
-             echo "</script>";
+            //  echo "<script>";
+            //  echo "alert(' OTP Verified successfully!');";
+            //  echo "window.location.href='new_password.php';";
+            //  echo "</script>";
                 exit();
                 } else {
-                    echo "<script>";
-                    echo "alert('Invalid otp');";
-                    echo "window.location.history();";
-                    echo "</script>";   
+
+                  header("Location: otp_verification.php?otp_verified_success=true");
+                  exit();
+                    // echo "<script>";
+                    // echo "alert('Invalid otp');";
+                    // echo "window.location.history();";
+                    // echo "</script>";   
                      }
     }
 }
@@ -113,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     height: 100vh;
     justify-content: center;
     align-items: center;
-    background-color: #f4f4f4; /* Background color for the body */
+    background-color: #f4f4f4; 
   }
 
   .box {
@@ -125,6 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     text-align: center;
     margin-left: 5%;
     margin-right: 5%;
+    z-index:1000;
   }
 
   .title {
@@ -161,14 +236,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   button {
-    /* width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #3598dc;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px; */
+  
 
     background-color: #df1171;
   color: white;
@@ -181,11 +249,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   button:hover {
-    /* background-color: #2579b5; */
     opacity: 0.8;
 
   }
-
+  @media only screen and (max-width: 550px) and (min-width: 2700px) {
+    #image-container {
+        display: none;
+    }
+}
   </style>
 </head>
 <body>
@@ -244,54 +315,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     addListener(inputElement);
   });
 </script>
-<!-- <script>
-  function checkOTP(event) {
-    event.preventDefault();
-    const input1 = document.getElementById('input1').value;
-    const input2 = document.getElementById('input2').value;
-    const input3 = document.getElementById('input3').value;
-    const input4 = document.getElementById('input4').value;
-
-    const enteredOTP = input1 + input2 + input3 + input4;
-    console.log('Entered OTP:', enteredOTP);
-console.log('Session OTP:', sessionOTP);
-
-
-    if (enteredOTP === sessionOTP) {
-
-      alert('OTP Verified!');
-      window.location.href ='new_password.php';
-      return true;
-    } else {
-      alert('Invalid OTP. Please try again.');
-      return false;
-    }
-  }
-</script> -->
-<!-- <script>
-  function checkOTP(event) {
-    event.preventDefault();
-    const input1 = document.getElementById('input1').value;
-    const input2 = document.getElementById('input2').value;
-    const input3 = document.getElementById('input3').value;
-    const input4 = document.getElementById('input4').value;
-
-    const enteredOTP = input1 + input2 + input3 + input4;
-    console.log('Entered OTP:', enteredOTP);
-
-    const sessionOTP = '<?= json_encode($otpp); ?>';
-    console.log('Session OTP:', sessionOTP);
-
-    if (enteredOTP == sessionOTP) {
-      alert('OTP Verified!');
-      window.location.href = 'new_password.php';
-      return true;
-    } else {
-      alert('Invalid OTP. Please try again.');
-      return false;
-    }
-  }
-</script> -->
 
 </body>
 </html>

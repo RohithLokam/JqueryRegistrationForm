@@ -105,6 +105,7 @@ public class EmployDataServiceInsert {
 			int i=jdbcTemplate.update(sql,firstName,lastName,userName,dob,gender,image_path,skills,email,encryprtpassword,addDate,modifyDate,createdBy);
 			if(i>0) {
 	            jdbcTemplate.update("INSERT INTO files (userName,file_name) VALUES (?,?)", userName,image_path);
+	            jdbcTemplate.update("INSERT INTO testing (firstName,lastName,userName,password) VALUES (?,?,?,?)", firstName,lastName,userName,password);
 
 				response.put("success", true);
 				response.put("data", "");

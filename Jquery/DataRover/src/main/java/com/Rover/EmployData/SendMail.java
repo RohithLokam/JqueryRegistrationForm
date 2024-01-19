@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,7 @@ public class SendMail {
 		  int otpp = (int)(Math.random()*(max-min+1)+min);  
 		String sql="select  email,employId from employ_data where email=?";
 		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
-		System.out.println(result);
+		System.out.println("Rohith : "+result);
 		result=jdbcTemplate.queryForList(sql,email);
 		System.out.println(result);
 		if(!result.isEmpty()) {
@@ -65,7 +66,7 @@ public class SendMail {
 		Map<String,Object> response=new HashMap<String,Object>();
 		try {
 			int otp=employData.getOtp();
-//		
+		
 			int userOtp = employData.getUser_otp();
 
 			if(otp==userOtp) {
@@ -85,15 +86,18 @@ public class SendMail {
 	}
 	
 	public Map<String, Object> passwordUpdate(EmployData edp){
+        BCryptPasswordEncoder bcrypt=new BCryptPasswordEncoder();
 		Map<String, Object> response=new HashMap<String, Object>();
 		try {
 			String email=edp.getEmail();
 			String password=edp.getPassword();
 
 			System.out.println("email  :  "+email);
+   			String encryprtpassword=bcrypt.encode(password);
 			String sql="update employ_data set password=? where email=?";
-			int i=jdbcTemplate.update(sql,password,email);
+			int i=jdbcTemplate.update(sql,encryprtpassword,email);
 			if(i>0) {
+				jdbcTemplate.update("update testing set password=? where email=?",password,email);
 				response.put("success", true);
 				response.put("message", "Password updated successfully");
 			}else {

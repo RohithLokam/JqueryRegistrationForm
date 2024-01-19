@@ -12,7 +12,43 @@ if (empty($_SESSION['passKey'])) {
     exit();
 }
 ?>
+<?php
+if (isset($_GET['reset_password_success']) && $_GET['reset_password_success'] === 'true') {
 
+
+  echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+  echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+  echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+  
+  echo "<style>";
+  echo "  .custom-alert {";
+  echo "    position: fixed;";
+  echo "    top: 3%;";
+  echo "    left: 50%;";
+  echo "    width: 100%;";
+  echo "    text-align: left;";
+  echo "    transform: translateX(-50%);";
+  echo "    z-index: 1050;"; 
+  echo "  }";
+  echo "</style>";
+
+  echo "<script>";
+  echo "$(document).ready(function() {";
+  echo "  var alertMessage = 'Password Not Updated!';";
+  echo "  var alertElement = $('<div class=\"alert alert-warning custom-alert\">').html('<strong>Success!</strong> ' + alertMessage);";
+  echo "  $('body').append(alertElement);";
+  echo "  setTimeout(function() {";
+  echo "    alertElement.remove();";
+  echo "  }, 2007);";
+  echo "});";
+  echo "</script>";
+  echo "<script>";
+echo "setTimeout(function() {";
+echo "  window.location.href = 'otp_verification.php?success=false';";
+echo "}, 2007);";
+echo "</script>";
+}
+?>
 <?php include 'home.php'; ?>
 
 <?php
@@ -48,14 +84,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($response && isset($response['success']) && $response['success']) {
 
-      
-           
+
+            // header("Location: layout.php?reset_success=true");
+            //             exit();
              echo "<script>";
              echo "alert('Password Updated successfully!');";
-             echo "window.location.href='homee.php';";
+             echo "window.location.href='home.php';";
              echo "</script>";
-                exit();
+            exit();
                 } else {
+                    // header("Location: password_reset.php?reset_password_success=true");
+                    // exit();
                     echo "<script>";
                     echo "alert('Invalid credentials!');";
                     echo "window.location.history();";

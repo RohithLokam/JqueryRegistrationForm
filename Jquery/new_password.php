@@ -5,7 +5,78 @@ session_start();
     exit();
 }
 ?>
+<?php
+if (isset($_GET['otp_verified_success']) && $_GET['otp_verified_success'] === 'true') {
 
+
+  echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+  echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+  echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+  
+  echo "<style>";
+  echo "  .custom-alert {";
+  echo "    position: fixed;";
+  echo "    top: 3%;";
+  echo "    left: 50%;";
+  echo "    width: 100%;";
+  echo "    text-align: left;";
+  echo "    transform: translateX(-50%);";
+  echo "    z-index: 1050;"; 
+  echo "  }";
+  echo "</style>";
+
+  echo "<script>";
+  echo "$(document).ready(function() {";
+  echo "  var alertMessage = 'OTP Verified successfully!';";
+  echo "  var alertElement = $('<div class=\"alert alert-success custom-alert\">').html('<strong>Success!</strong> ' + alertMessage);";
+  echo "  $('body').append(alertElement);";
+  echo "  setTimeout(function() {";
+  echo "    alertElement.remove();";
+  echo "  }, 2007);";
+  echo "});";
+  echo "</script>";
+  echo "<script>";
+echo "setTimeout(function() {";
+echo "  window.location.href = 'new_password.php?success=false';";
+echo "}, 2007);";
+echo "</script>";
+}
+else if (isset($_GET['newPassword_success']) && $_GET['newPassword_success'] === 'true') {
+
+
+    echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>";
+    echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>";
+    echo "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>";
+    
+    echo "<style>";
+    echo "  .custom-alert {";
+    echo "    position: fixed;";
+    echo "    top: 3%;";
+    echo "    left: 50%;";
+    echo "    width: 100%;";
+    echo "    text-align: left;";
+    echo "    transform: translateX(-50%);";
+    echo "    z-index: 1050;"; 
+    echo "  }";
+    echo "</style>";
+  
+    echo "<script>";
+    echo "$(document).ready(function() {";
+    echo "  var alertMessage = 'Password Not Generated!';";
+    echo "  var alertElement = $('<div class=\"alert alert-warning custom-alert\">').html('<strong>Failure!</strong> ' + alertMessage);";
+    echo "  $('body').append(alertElement);";
+    echo "  setTimeout(function() {";
+    echo "    alertElement.remove();";
+    echo "  }, 2007);";
+    echo "});";
+    echo "</script>";
+    echo "<script>";
+  echo "setTimeout(function() {";
+  echo "  window.location.href = 'new_password.php?success=false';";
+  echo "}, 2007);";
+  echo "</script>";
+  }
+?>
 <?php
 // session_start();
 $Email = $_SESSION['Email'];
@@ -36,34 +107,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($response && isset($response['success']) && $response['success']) {
 
-            $data = json_decode($result, true);
+            // $data = json_decode($result, true);
 
 
-            // if (!empty($data) && isset($data['data']) && count($data['data']) > 0) {
-            //     $user = $data['data'][0];
-        
-            //     $_SESSION['firstName']= $user['firstName'];
-            //     $_SESSION['lastName']= $user['lastName'];
-              
-            //     $_SESSION['image']= $user['image'];
-            //     $_SESSION['employId']= $user['employId'];
-
-        
-
-            // } 
-
+            
       
-           
-             echo "<script>";
-             echo "alert(' Password updated  successful!');";
-             echo "window.location.href='logout.php';";
-             echo "</script>";
+            header("Location: index.php?newPassword_success=true");
+                        exit();
+            //  echo "<script>";
+            //  echo "alert(' Password updated  successful!');";
+            //  echo "window.location.href='logout.php';";
+            //  echo "</script>";
                 exit();
                 } else {
-                    echo "<script>";
-                    echo "alert('password not  updated!');";
-                    echo "window.location.history();";
-                    echo "</script>";   
+                    header("Location: new_password.php?newPassword_success=true");
+                    exit();
+                    // echo "<script>";
+                    // echo "alert('password not  updated!');";
+                    // echo "window.location.history();";
+                    // echo "</script>";   
                      }
     }
 }
@@ -189,6 +251,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       height:100%;
       object-fit: cover;
     }
+    @media only screen and (max-width: 550px) and (min-width: 2700px) {
+    #image-container {
+        display: none;
+    }
+}
     </style>
    
 </head>
@@ -288,6 +355,8 @@ togglePassword1.addEventListener('click', function () {
     }
 }
 function validPasswords() {
+    userNameValidation();
+    passwordValidation();
    
         var newPassword = $('#userName').val();
         var confirmPassword = $('#password').val();
