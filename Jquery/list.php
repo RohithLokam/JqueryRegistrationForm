@@ -7,22 +7,12 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 ?>
 
-
 <?php include 'layout.php'; ?>
 
 <?php
-// session_start();
-
-// if (empty($_SESSION['passKey'])) {
-//     header("Location: index.html");
-//     exit();
-// }
 
 $passKey=$_SESSION['passKey'];
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // $employId = isset($_POST['searching']) ? $_POST['searching'] : '';
 
 
 $url = "http://172.17.13.138:8080/employ_data/$passKey";
@@ -53,11 +43,6 @@ echo '</script>';
 
 curl_close($ch);
 
-// } else {
-//     http_response_code(405);
-//     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
-//     exit();
-// }
 ?>
 
 <!DOCTYPE html>
@@ -102,48 +87,44 @@ curl_close($ch);
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .searching {
-  float: right;
-  width: 5%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-  margin-right: 5%;
-}
- input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: right;
-  width: 14%;
-  background: #f1f1f1;
-}
-.searchbox{
-    margin-top:9%;
-}
-@media only screen and (max-width: 550px) and (min-width: 270px) {
-        .unwantedd{
-            display:none;
-        }
-    }
 
+        .searching {
+            float: right;
+            width: 5%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+            margin-right: 5%;
+        }
+
+        input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: right;
+            width: 14%;
+            background: #f1f1f1;
+        }
+
+        .searchbox {
+            margin-top: 9%;
+        }
+
+        @media only screen and (max-width: 550px) and (min-width: 270px) {
+            .unwantedd {
+                display: none;
+            }
+        }
     </style>
 </head>
 
 <body onload="getdata()">
-    <!-- <a href="home.php" style="float: left; margin-left: 5%; margin-top: 7%;">
-        <span class="arrow">&larr;</span>
-        Go Back
-    </a><br> -->
     <div class="searchbox">
-    <!-- <form  action="" method="POST">
-    <button class="searching" type="submit" onclick="getdata()"><i class="fa fa-search"></i></button>
-    <input type="text" placeholder="Employ Search..."  id="searching" name="searching">
-   </form> -->
+
     </div>
     <br>
     <center>
@@ -156,7 +137,7 @@ curl_close($ch);
                     <th>Last Name</th>
                     <th class="unwantedd">DOB</th>
                     <th class="unwantedd">Gender</th>
-                    <th >Skills</th>
+                    <th>Skills</th>
                     <th class="unwantedd">Email</th>
                     <!-- <th>Edit</th> -->
                 </tr>
@@ -169,16 +150,12 @@ curl_close($ch);
     <script>
         var empdata;
 
-function getdata() {
-
-    const empdata = <?php echo json_encode($empdata); ?>;
-
-    if (empdata && empdata.success && empdata.data) {
-        const employDataMap = empdata.data;
-
-        Object.values(employDataMap).forEach(user => {
-         
-            const markup = `
+        function getdata() {
+            const empdata = <?php echo json_encode($empdata); ?> ;
+            if (empdata && empdata.success && empdata.data) {
+                const employDataMap = empdata.data;
+                Object.values(employDataMap).forEach(user => {
+                    const markup = `
                 <tr onclick="navigateToEditPage(${user.employId})">
  
                     <td>${user.firstName}</td>
@@ -189,19 +166,16 @@ function getdata() {
                     <td class="unwantedd">${user.email}</td>
                    
                 </tr>`;
-
-            document.getElementById('tableData').insertAdjacentHTML('beforeend', markup);
-        });
-    } else {
-        console.error('Invalid or missing data format', empdata);
-    }
-}
+                    document.getElementById('tableData').insertAdjacentHTML('beforeend', markup);
+                });
+            } else {
+                console.error('Invalid or missing data format', empdata);
+            }
+        }
 
         function navigateToEditPage(employId) {
             window.location.href = `view.php?employId=${employId}`;
         }
-
-        
     </script>
 </body>
 

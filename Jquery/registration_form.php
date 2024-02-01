@@ -1,19 +1,15 @@
-
-
 <?php include 'layout_extra.php'; ?>
 
 <head>
-    
+
     <title>PeopleConnect</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
-
-  
     <style>
         .register {
 
@@ -31,29 +27,28 @@
             left: 31.5%;
             z-index: 0;
         }
-        /* .btn-primary:hover{
-            opacity: 0.8;
-        } */
         .form-check-inline {
-    display: flex;
-    align-items: center;
-    margin-right: 5px; 
-    margin-bottom: 8px;
-    margin-left: 25%;
-}
-.form-check-inline label {
-    order: -1;
-    margin-right: 36px; 
-}
+            display: flex;
+            align-items: center;
+            margin-right: 5px;
+            margin-bottom: 8px;
+            margin-left: 25%;
+        }
+
+        .form-check-inline label {
+            order: -1;
+            margin-right: 36px;
+        }
+
         h2 {
             color: rgb(177, 9, 73);
         }
 
         label {
             display: inline-block;
-    width: 30%; 
-    text-align: right;
-    margin-top: 10px;
+            width: 30%;
+            text-align: right;
+            margin-top: 10px;
         }
 
         input[type="text"],
@@ -66,7 +61,8 @@
             box-sizing: border-box;
             display: inline-block;
         }
-         input[type="checkbox"],
+
+        input[type="checkbox"],
         input[type="radio"] {
             margin-right: 8px;
         }
@@ -81,7 +77,8 @@
         .form-group {
             margin-bottom: 0;
         }
-        .g-recaptcha{
+
+        .g-recaptcha {
             height: 72px;
             margin-left: 126px;
         }
@@ -103,79 +100,84 @@
             color: red;
             margin-bottom: 10px;
         }
+
         .error-tooltip {
-    position: absolute;
-    margin-top: 5px;
-    background-color: #ff000f; 
-    color: white;
-    padding: 8px;
-    border-radius: 4px;
-    display: none;
-    width:200px;
-    z-index:50;
-}
+            position: absolute;
+            margin-top: 5px;
+            background-color: #ff000f;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            display: none;
+            width: 200px;
+            z-index: 50;
+        }
+
         @media only screen and (max-width: 550px) and (min-width: 270px) {
             .register {
                 text-align: center;
-            border-style: solid;
-            border-radius: 5px;
-            background-color: #f2f2f2;
-            padding: 5px;
-            margin-top: 27%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: absolute;
-            width: 81%;
-            top: 0;
-            left: 14%;
-            z-index: 0;
-        }
-        #tp {
-        transform: translateY(-27%);
-        transform: translateX(-63%);
-        height:72px;
-    }
-    .g-recaptcha{
-        margin-left: -3px;
+                border-style: solid;
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 5px;
+                margin-top: 27%;
+                max-height: 80vh;
+                overflow-y: auto;
+                position: absolute;
+                width: 81%;
+                top: 0;
+                left: 14%;
+                z-index: 0;
             }
-            .mag{
+
+            #tp {
+                transform: translateY(-27%);
+                transform: translateX(-63%);
+                height: 72px;
+            }
+
+            .g-recaptcha {
+                margin-left: -3px;
+            }
+
+            .mag {
                 margin-top: 54%;
             }
 
         }
 
         button {
-  background-color: #df1171;
-  margin-top: 9px;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;  
-  width: 27%;
+            background-color: #df1171;
+            margin-top: 9px;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 27%;
 
-}
-
-
-
+        }
     </style>
 </head>
 
 <body>
 
-<div class="register container">
+    <div class="register container">
 
         <h2>Registration Form</h2>
-        <form id="registrationForm" action="registration_form_insert.php" method="POST" onsubmit="return validateForm(event)" enctype="multipart/form-data">
+        <form id="registrationForm" action="registration_form_insert.php" method="POST"
+            onsubmit="return validateForm(event)" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter First Name" maxlength="66">
+                <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter First Name"
+                    maxlength="66">
                 <div id="fname-error-tooltip" class="error-tooltip"></div><br>
 
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name" maxlength="60">
+                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name"
+                    maxlength="60">
                 <div id="lname-error-tooltip" class="error-tooltip"></div><br>
             </div>
             <div class="form-group">
@@ -219,16 +221,18 @@
             </div>
             <div class="form-group">
                 <label for="Email">Email:</label>
-                <input type="text" id="Email" name="Email" class="form-control" placeholder="Enter Email" >
+                <input type="text" id="Email" name="Email" class="form-control" placeholder="Enter Email">
                 <div id="email-error-tooltip" class="error-tooltip"></div><br>
-                <input type="text" id="officialMail" name="officialMail" class="form-control" placeholder="Enter Email" hidden>
+                <input type="text" id="officialMail" name="officialMail" class="form-control" placeholder="Enter Email"
+                    hidden>
                 <input type="text" id="userName" name="userName" class="form-control" placeholder="Enter Email" hidden>
 
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="text" id="password" name="password" class="form-control" placeholder="Enter Password">
-                <img style="margin-top:-72px; margin-right:-72px;" src="https://clipground.com/images/password-eye-icon-png-2.png" id="tp">
+                <img style="margin-top:-72px; margin-right:-72px;"
+                    src="https://clipground.com/images/password-eye-icon-png-2.png" id="tp">
                 <div id="pass-error-tooltip" class="error-tooltip"></div><br>
 
             </div>
@@ -238,17 +242,14 @@
                 <div id="imag-error-tooltip" class="error-tooltip"></div><br>
             </div>
             <div class="form-group">
-            <div  class="g-recaptcha" data-sitekey="6Lfk6VopAAAAAFO_JebJV1c8gghblI5fa0vzfL1B"></div>
+                <div class="g-recaptcha" data-sitekey="6Lfk6VopAAAAAFO_JebJV1c8gghblI5fa0vzfL1B"></div>
             </div>
-            <!-- <div class="btn-group"> -->
-                <button class="btn btn-secondary" type="reset" id="clear" onclick="clearErrors()" >Reset</button>
-  <button style="  background-color: #df1171;" id="sendButton" type="submit" class="btn btn-primary" onclick="handleButtonClick()">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>
-            <span class="button-text">Send</span>
-        </button>
-
-                <!-- <button style="background-color: #df1171;" type="submit" value="Submit" class="btn btn-primary">Submit</button> -->
-            <!-- </div> -->
+            <button class="btn btn-secondary" type="reset" id="clear" onclick="clearErrors()">Reset</button>
+            <button style="  background-color: #df1171;" id="sendButton" type="submit" class="btn btn-primary"
+                onclick="handleButtonClick()">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>
+                <span class="button-text">Send</span>
+            </button>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -256,113 +257,89 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
-    <script>
-                $('#spinner').hide();
+<script>
+    $('#spinner').hide();
 
-                function handleButtonClick() {
-                    console.log('Button clicked'); 
-
+    function handleButtonClick() {
+        console.log('Button clicked');
         $('#sendButton').prop('disabled', true);
         $('#spinner').show();
         $('#registrationForm').submit();
-
-        setTimeout(function () {
+        setTimeout(function() {
             $('#sendButton').prop('disabled', false);
-
             $('#spinner').hide();
-            
         }, 9000);
-        console.log('Form submitted'); 
-
+        console.log('Form submitted');
         return false;
     }
+    $(document).ready(() => {
+        $("#firstName").on('input', function() {
+            var inputValue = $(this).val();
+            $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+        });
+    });
+    $(document).ready(() => {
+        $("#lastName").on('input', function() {
+            var inputValue = $(this).val();
+            $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+        });
+    });
+    const togglePassword = document.querySelector('#tp');
+    const password = document.querySelector('#password');
+    let isPasswordVisible = false;
+    password.setAttribute('type', 'password');
+    togglePassword.addEventListener('click', function() {
+        isPasswordVisible = !isPasswordVisible;
+        const type = isPasswordVisible ? 'text' : 'password';
+        password.setAttribute('type', type);
+        if (isPasswordVisible) {
+            togglePassword.src = "https://clipground.com/images/password-eye-icon-png-2.png";
+        } else {
+            togglePassword.src =
+                "https://cdn3.iconfinder.com/data/icons/show-and-hide-password/100/show_hide_password-08-512.png";
+        }
+    });
 
-
-        $(document).ready(() => {
-$("#firstName").on('input', function () {
-var inputValue = $(this).val();
-$(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
-});
-});
-$(document).ready(() => {
-$("#lastName").on('input', function () {
-var inputValue = $(this).val();
-$(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
-});
-});
-const togglePassword = document.querySelector('#tp');
-const password = document.querySelector('#password');
-let isPasswordVisible = false;
-
-password.setAttribute('type', 'password');
-
-togglePassword.addEventListener('click', function () {
-    isPasswordVisible = !isPasswordVisible;
-
-    const type = isPasswordVisible ? 'text' : 'password';
-    password.setAttribute('type', type);
-
-    if (isPasswordVisible) {
-        togglePassword.src = "https://clipground.com/images/password-eye-icon-png-2.png";
-    } else {
-        togglePassword.src = "https://cdn3.iconfinder.com/data/icons/show-and-hide-password/100/show_hide_password-08-512.png";
-
+    function generateEmail() {
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        fetch(`http://172.17.13.138:8080/user_name_check/${firstName}/${lastName}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data && Object.keys(data).length > 0) {
+                    const email = data['email'];
+                    const userName = data['userName'];
+                    document.getElementById("officialMail").value = email;
+                    document.getElementById("userName").value = userName;
+                } else {
+                    console.error('No data found for the specified ID.');
+                }
+            })
+            .catch(error => console.error(error));
     }
-});
+    let count = 0;
 
-function generateEmail() {
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-
-    fetch(`http://172.17.13.138:8080/user_name_check/${firstName}/${lastName}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-
-            if (data && Object.keys(data).length > 0) {
-                const email = data['email'];
-                const userName= data['userName'];
-                  
-                document.getElementById("officialMail").value = email;
-                document.getElementById("userName").value = userName;
-
-            } else {
-                console.error('No data found for the specified ID.');
-            }
-        })
-        .catch(error => console.error(error));
-}
-
-
-        let count = 0;
-
-        function validateForm(event) {
-            count = 0; 
-
-            firstNameValidation();
-            lastNameValidation();
-            dobValidation();
-            skillsValidation();
-            emailValidation();
-            passwordValidation();
-            genderValidation();
-            imageValidation();
-
-            console.log(count);
-            if (count === 8) {
-                return true;
-
-} 
-        else {
-
-                alert("Form validation failed. Please check the errors.");
-                event.preventDefault();
-                return false;
-            }
-            }
-
-
-            $(document).ready(function() {
+    function validateForm(event) {
+        count = 0;
+        firstNameValidation();
+        lastNameValidation();
+        dobValidation();
+        skillsValidation();
+        emailValidation();
+        passwordValidation();
+        genderValidation();
+        imageValidation();
+        console.log(count);
+        if (count === 8) {
+            return true;
+        } else {
+            alert("Form validation failed. Please check the errors.");
+            event.preventDefault();
+            return false;
+        }
+    }
+    $(document).ready(function() {
         $("#firstName").on("blur", function() {
             firstNameValidation();
         });
@@ -379,227 +356,194 @@ function generateEmail() {
             passwordValidation();
         });
         $("input[name='skills[]']").on("change", function() {
-        skillsValidation();
+            skillsValidation();
         });
         $("input[name='gender']").on("change", function() {
-        skillsValidation();
+            skillsValidation();
         });
         $("#clear").on("click", function() {
             clearErrors();
         });
-        $("#image").on("click",function() {
+        $("#image").on("click", function() {
             imageValidation();
         })
-        
     });
 
-
-  
-
-    
     function firstNameValidation() {
         const firstName = $("#firstName").val();
-        const namePattern = /^[A-Za-z]+$/;       
+        const namePattern = /^[A-Za-z]+$/;
         const fnameElement = $("#fname-error-tooltip");
         if (firstName === "") {
-            fnameElement.text("First name can't be empty","fname-error-tooltip");
+            fnameElement.text("First name can't be empty", "fname-error-tooltip");
             fnameElement.show();
-        }  else if (firstName.length < 3 || firstName.length > 60) {
+        } else if (firstName.length < 3 || firstName.length > 60) {
             fnameElement.text("Name should be between 3 and 60 characters");
             fnameElement.show();
         } else if (!firstName.match(namePattern)) {
             fnameElement.text("Please enter only characters");
             fnameElement.show();
-        }else {
+        } else {
             count++;
             fnameElement.hide();
-          
         }
         setTimeout(function() {
-        $("#fname-error-tooltip").hide();
-    }, 2700);
+            $("#fname-error-tooltip").hide();
+        }, 2700);
     }
-   
 
-   
-
-
-        function lastNameValidation(){
-            generateEmail();
-
-            const lastName=$("#lastName").val();
-            const namePattern=/^[A-Za-z]+$/;
-            const lnameElement = $("#lname-error-tooltip");
-
-            if(lastName===""){
-                lnameElement.text("Last name can't be empty");
-                lnameElement.show();
-            }else if (lastName.length<3 || lastName.length>60 ) {
-                lnameElement.text("name should be below 60 and above 3 charactesr");
-                lnameElement.show();
-            }
-             else if (!lastName.match(namePattern)) {
-                lnameElement.text("Please enter only characters");
-                lnameElement.show();
-            } else {
-                count++;
-                lnameElement.hide();
-            }
-            setTimeout(function() {
-        $("#lname-error-tooltip").hide();
-    }, 3000);
+    function lastNameValidation() {
+        generateEmail();
+        const lastName = $("#lastName").val();
+        const namePattern = /^[A-Za-z]+$/;
+        const lnameElement = $("#lname-error-tooltip");
+        if (lastName === "") {
+            lnameElement.text("Last name can't be empty");
+            lnameElement.show();
+        } else if (lastName.length < 3 || lastName.length > 60) {
+            lnameElement.text("name should be below 60 and above 3 charactesr");
+            lnameElement.show();
+        } else if (!lastName.match(namePattern)) {
+            lnameElement.text("Please enter only characters");
+            lnameElement.show();
+        } else {
+            count++;
+            lnameElement.hide();
         }
-
-         
-
-
-
-
-
-        function dobValidation() {
-    const dobInput = $("#dob").val();
-    const today = new Date();
-    const dob = new Date(dobInput);
-    const dateElement = $("#date-error-tooltip");
-
-    if (dobInput === "") {
-        dateElement.text("Date of birth is required");
-        dateElement.show();
-    } else if (dob > today) {
-        dateElement.text("Date of birth must be in the past");
-        dateElement.show();
-    } else {
-        count++;
-        dateElement.text("");
-        dateElement.hide();
+        setTimeout(function() {
+            $("#lname-error-tooltip").hide();
+        }, 3000);
     }
-    setTimeout(function() {
-        $("#date-error-tooltip").hide();
-    }, 3000);
-}
 
-        function skillsValidation() {
-    const checkedSkills = $("input[name='skills[]']:checked");
-    const skillElement = $("#skill-error-tooltip");
-
-    if (checkedSkills.length < 2) {
-        skillElement.text("Please select at least 2 skills");
-        skillElement.show();
-    } else {
-        count++;
-        skillElement.text("");
-        skillElement.hide();
-    }
-    setTimeout(function() {
-        $("#skill-error-tooltip").hide();
-    }, 3000);
-}
-
-    
-        function emailValidation() {
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            const email = $("#Email").val();
-            emailElement=$("#email-error-tooltip");
-
-            if (email === "") {
-                emailElement.text("Email can't be empty");
-                emailElement.show();
-            } else if (!email.match(emailPattern)) {
-                emailElement.text("Invalid email format");
-                emailElement.show();
-            } else {
-                count++;
-                emailElement.text("");
-                emailElement.hide();
-            }
-            setTimeout(function() {
-        $("#email-error-tooltip").hide();
-    }, 3000);
+    function dobValidation() {
+        const dobInput = $("#dob").val();
+        const today = new Date();
+        const dob = new Date(dobInput);
+        const dateElement = $("#date-error-tooltip");
+        if (dobInput === "") {
+            dateElement.text("Date of birth is required");
+            dateElement.show();
+        } else if (dob > today) {
+            dateElement.text("Date of birth must be in the past");
+            dateElement.show();
+        } else {
+            count++;
+            dateElement.text("");
+            dateElement.hide();
         }
-
-        
-
-        function genderValidation() {
-    const selectedGender = $("input[name='gender']:checked");
-    genderElement=$("#gender-error-tooltip");
-
-    if (selectedGender.length === 0) {
-        genderElement.text("Please select a gender");
-        genderElement.show();
-    } else {
-        count++;
-        genderElement.text("");
-        genderElement.hide();
+        setTimeout(function() {
+            $("#date-error-tooltip").hide();
+        }, 3000);
     }
-    setTimeout(function() {
-        $("#gender-error-tooltip").hide();
-    }, 3000);
-}
 
-
-function passwordValidation() {
-    const passwordInput = $("#password").val();
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/;
-    const passwordElement = $("#pass-error-tooltip");
-    const passwordMatch = passwordInput.match(passwordPattern);
-
-    if (!passwordMatch) {
-        passwordElement.text("Password must contain at least one uppercase letter, one lowercase letter, and one special character.");
-        passwordElement.show();
-    } else {
-        count++;
-        passwordElement.text("");
-        passwordElement.show();
+    function skillsValidation() {
+        const checkedSkills = $("input[name='skills[]']:checked");
+        const skillElement = $("#skill-error-tooltip");
+        if (checkedSkills.length < 2) {
+            skillElement.text("Please select at least 2 skills");
+            skillElement.show();
+        } else {
+            count++;
+            skillElement.text("");
+            skillElement.hide();
+        }
+        setTimeout(function() {
+            $("#skill-error-tooltip").hide();
+        }, 3000);
     }
-    setTimeout(function() {
-        $("#pass-error-tooltip").hide();
-    }, 3000);
-}
 
+    function emailValidation() {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const email = $("#Email").val();
+        emailElement = $("#email-error-tooltip");
+        if (email === "") {
+            emailElement.text("Email can't be empty");
+            emailElement.show();
+        } else if (!email.match(emailPattern)) {
+            emailElement.text("Invalid email format");
+            emailElement.show();
+        } else {
+            count++;
+            emailElement.text("");
+            emailElement.hide();
+        }
+        setTimeout(function() {
+            $("#email-error-tooltip").hide();
+        }, 3000);
+    }
+
+    function genderValidation() {
+        const selectedGender = $("input[name='gender']:checked");
+        genderElement = $("#gender-error-tooltip");
+        if (selectedGender.length === 0) {
+            genderElement.text("Please select a gender");
+            genderElement.show();
+        } else {
+            count++;
+            genderElement.text("");
+            genderElement.hide();
+        }
+        setTimeout(function() {
+            $("#gender-error-tooltip").hide();
+        }, 3000);
+    }
+
+    function passwordValidation() {
+        const passwordInput = $("#password").val();
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/;
+        const passwordElement = $("#pass-error-tooltip");
+        const passwordMatch = passwordInput.match(passwordPattern);
+        if (!passwordMatch) {
+            passwordElement.text(
+                "Password must contain at least one uppercase letter, one lowercase letter, and one special character."
+            );
+            passwordElement.show();
+        } else {
+            count++;
+            passwordElement.text("");
+            passwordElement.show();
+        }
+        setTimeout(function() {
+            $("#pass-error-tooltip").hide();
+        }, 3000);
+    }
 
     function imageValidation() {
         // let imageInput = $("#image").val();
-		let imageElement = $("#imag-error-tooltip");
-
-
-			if ($('#image')[0].files.length === 0) {
-				imageElement.html("No image selected");
-                imageElement.show();
-			} else {
-                count++;
-				imageElement.html("");
-                imageElement.show();
-            }
-            setTimeout(function() {
-        $("#imag-error-tooltip").hide();
-    }, 3000);
-
+        let imageElement = $("#imag-error-tooltip");
+        if ($('#image')[0].files.length === 0) {
+            imageElement.html("No image selected");
+            imageElement.show();
+        } else {
+            count++;
+            imageElement.html("");
+            imageElement.show();
+        }
+        setTimeout(function() {
+            $("#imag-error-tooltip").hide();
+        }, 3000);
     }
 
     function showErrorTooltip(message, elementId) {
-    $("#" + elementId).text(message);
-    $("#" + elementId).show();
-}
+        $("#" + elementId).text(message);
+        $("#" + elementId).show();
+    }
 
-function hideErrorTooltip(elementId) {
-    // $("#" + elementId).text("");
-    $("#" + elementId).hide();
-}
+    function hideErrorTooltip(elementId) {
+        // $("#" + elementId).text("");
+        $("#" + elementId).hide();
+    }
 
-
-
-        function clearErrors() {
-    $("#fname-error-tooltip").html("");
-    $("#lname-error-tooltip").html("");
-    $("#date-error-tooltip").html("");
-    $("#skill-error-tooltip").html("");
-    $("#email-error-tooltip").html("");
-    $("#pass-error-tooltip").html("");
-    $("#gender-error-tooltip").html("");
-    $("#imag-error-tooltip").html("");
-}
-
-    </script>
+    function clearErrors() {
+        $("#fname-error-tooltip").html("");
+        $("#lname-error-tooltip").html("");
+        $("#date-error-tooltip").html("");
+        $("#skill-error-tooltip").html("");
+        $("#email-error-tooltip").html("");
+        $("#pass-error-tooltip").html("");
+        $("#gender-error-tooltip").html("");
+        $("#imag-error-tooltip").html("");
+    }
+</script>
 </body>
 
 </html>

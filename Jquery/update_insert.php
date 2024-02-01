@@ -51,12 +51,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $api_url = 'http://172.17.13.138:8080/employ_data';
     $ch = curl_init($api_url);
 
+    // $headers = array(
+    //     'Content-Type: application/json',
+    //     'Authorization: ' . $_SESSION['token']
+    // );
+    $headers = array(
+        'Authorization: ' . $_SESSION['token']
+    );
+   
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST  => 'PUT',
         CURLOPT_POSTFIELDS     => $postData,
         CURLOPT_SAFE_UPLOAD    => true,
         CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTPHEADER     => $headers 
     ]);
 
     $response = curl_exec($ch);

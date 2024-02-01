@@ -7,12 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['g-recaptcha-response'] != "
     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
     $responseData = json_decode($verifyResponse);
     if ($responseData->success) {
-        
-
-
-
-
-
     $firstName = isset($_POST['firstName']) ? $_POST['firstName'] : '';
     $lastName = isset($_POST['lastName']) ? $_POST['lastName'] : '';
     $userName = isset($_POST['userName']) ? $_POST['userName'] : '';
@@ -21,13 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['g-recaptcha-response'] != "
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $dob = isset($_POST['dob']) ? $_POST['dob'] : '';
     $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
-
-
     $skillsArray = isset($_POST['skills']) ? (array)$_POST['skills'] : [];
-
     $skills = implode(',', $skillsArray);    
-
-   
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] === 0) {
         $file = $_FILES["image"];
         $fileName = htmlspecialchars($file["name"]);

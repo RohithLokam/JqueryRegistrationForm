@@ -7,7 +7,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 ?>
 
-
 <?php include 'layout.php'; ?>
 
 <?php
@@ -23,7 +22,10 @@ $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_HTTPGET, true); 
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'Authorization:' . $_SESSION['token'] 
+]);
 
 $response = curl_exec($ch);
 
@@ -45,13 +47,7 @@ echo '</script>';
 
 curl_close($ch);
 
-// } else {
-//     http_response_code(405);
-//     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
-//     exit();
-// }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -85,48 +81,57 @@ curl_close($ch);
         td {
             border: 1px solid white;
             text-align: left;
-            padding: 8px;
+            padding-top: 45px;
+
+
         }
 
         tr {
-            border: 3px solid gray;
+            height: 72px;
+
+
         }
 
         tr:nth-child(even) {
             background-color: #f2f2f2;
+
         }
+
         .searching {
-  float: right;
-  width: 5%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-  margin-right: 5%;
-}
- input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: right;
-  width: 14%;
-  background: #f1f1f1;
-}
-.searchbox{
-    margin-top:9%;
-}
-@media only screen and (max-width: 550px) and (min-width: 270px) {
-        .unwantedd{
-            display:none;
+            float: right;
+            width: 5%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+            margin-right: 5%;
         }
-    }
-  
+
+        input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: right;
+            width: 14%;
+            background: #f1f1f1;
+        }
+
+        .searchbox {
+            margin-top: 9%;
+        }
+
+        @media only screen and (max-width: 550px) and (min-width: 270px) {
+            .unwantedd {
+                display: none;
+            }
+        }
+
         .register {
-            
-            border-radius: 5px; 
+
+            border-radius: 5px;
             text-align: center;
             padding: 20px 27px 30px 27px;
             background-color: white;
@@ -145,124 +150,126 @@ curl_close($ch);
             margin-left: 14%;
             margin-right: 15%;
         }
+
         .arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  cursor: pointer;
-  text-align: left;
-}
-@media only screen and (max-width: 550px) and (min-width: 270px) {
-            /* .register {
-            text-align: center;
-            border-style: solid;
-            border-radius: 5px;
-            background-color: #f2f2f2;
-            padding: 20px;
-            margin-top: -21.6%;
-            margin-left: 14%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: absolute;
-            width: 72%;
-            top: 0;
-            left: 3%;
-            z-index: 0;
-        } */
-        .register {
-            
-            border-radius: 5px; 
-            text-align: center;
-            padding: 20px 27px 30px 27px;
-            background-color: white;
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+            cursor: pointer;
+            text-align: left;
         }
-        .lastname{
-            margin-right:45px;
+
+        @media only screen and (max-width: 550px) and (min-width: 270px) {
+
+            .register {
+
+                border-radius: 5px;
+                text-align: center;
+                padding: 20px 27px 30px 27px;
+                background-color: white;
+            }
+
+            .lastname {
+                margin-right: 45px;
+            }
+
+            .last {
+                margin-left: 36px;
+            }
         }
-        .last{
-            margin-left:36px;
-        }
-    }
     </style>
 </head>
 
-<!-- <body onload="getData()"> -->
 <body>
     <div class="container" style="max-width: 100vw;">
         <h1 class="mt-5 mb-3 text-center">Employee Data</h1>
         <table style="width:100%;" class="table table-striped">
             <thead>
                 <tr>
-                <th>First Name</th>
+                    <th>First Name</th>
                     <th>Last Name</th>
                     <th class="unwantedd">DOB</th>
                     <th class="unwantedd">Gender</th>
-                    <th >Skills</th>
+                    <th>Skills</th>
                     <th class="unwantedd">Email</th>
                 </tr>
+
             </thead>
             <tbody id="tableData">
-              
+
             </tbody>
         </table>
-    </div>
-  
 
-    <div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeModalLabel" aria-hidden="true">
+    </div>
+
+    <div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <!-- <div class="modal-content"> -->
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title" id="employeeModalLabel">Employee Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                <div class="modal-body" id="modalBody">
-                    <!-- Employee details will be displayed here -->
-                </div>
-            <!-- </div> -->
+
+            <div class="modal-body" id="modalBody">
+                Employee details will be displayed here
+            </div>
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <script>
+            var empdata;
+            if (empdata && empdata.success && empdata.data) {
+                const employDataMap = empdata.data;
+                Object.values(employDataMap).forEach(user => {
+                    const markup = `
+            <tr data-toggle='modal' data-target='#employeeModal'> 
 
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+                    <td class="unwantedd">${user.dob}</td>
+                    <td class="unwantedd">${user.gender}</td>
+                    <td>${user.skills}</td>
+                    <td class="unwantedd">${user.email}</td>
+                    <td hidden class="unwantedd">${user.userName}</td>
+                    <td hidden class="unwantedd">${user.image}</td>
 
-    <script>
+                   
+                </tr>`;
+                    document.getElementById('tableData').insertAdjacentHTML('beforeend', markup);
+                });
+            } else {
+                console.error('Invalid or missing data format', empdata);
+            }
+        </script>
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('#tableData tr');
-        rows.forEach(row => {
-            row.addEventListener('click', function() {
-                const firstName = this.cells[0].innerText;
-                const lastName = this.cells[1].innerText;
-                const dob = this.cells[2].innerText;
-                const gender = this.cells[3].innerText;
-                const skills = this.cells[4].innerText;
-                const email = this.cells[5].innerText;
-                const userName = this.cells[6].innerText;
-                const image= this.cells[7].innerText;
-
-
-                displayEmployeeDetails(firstName, lastName, dob, gender, skills, email, userName, image);
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const rows = document.querySelectorAll('#tableData tr');
+                rows.forEach(row => {
+                    row.addEventListener('click', function() {
+                        const firstName = this.cells[0].innerText;
+                        const lastName = this.cells[1].innerText;
+                        const dob = this.cells[2].innerText;
+                        const gender = this.cells[3].innerText;
+                        const skills = this.cells[4].innerText;
+                        const email = this.cells[5].innerText;
+                        const userName = this.cells[6].innerText;
+                        const image = this.cells[7].innerText;
+                        displayEmployeeDetails(firstName, lastName, dob, gender, skills, email,
+                            userName, image);
+                    });
+                });
             });
-        });
-    });
 
-    function displayEmployeeDetails(firstName, lastName, dob, gender, skills, email, userName, imageUrl) {
-        console.log(imageUrl);
-        const modalBody = document.getElementById("modalBody");
-            modalBody.innerHTML = `
+            function displayEmployeeDetails(firstName, lastName, dob, gender, skills, email, userName, imageUrl) {
+                const modalBody = document.getElementById("modalBody");
+                modalBody.innerHTML = `
     
 
                 <div class="register">
 
      
-<a href="list.php" style="float: left; margin-left: 3%;">
+<a href="practice.php" style="float: left; margin-left: 3%;">
   <span class="arrow">&larr;</span>
   Go Back
 </a>
@@ -270,18 +277,9 @@ curl_close($ch);
 <h2 style="color: blue;">Employ Details </h2>
 <form>
 
-<?php
-if (!empty($imageURL)) {
-    $imageData = base64_decode($imageURL);
+<img style="max-width:20%; height: 10%;" id="profile-image" src="data:image/jpeg;base64,${imageUrl}">
 
-    $imageType = "data:image/png;base64,";
-    echo '<img style="max-width:20%; height: 10%;" id="profile-image" src="' . $imageType . base64_encode($imageData) . '" alt="Profile Image">';
-    } else {
-        echo '<img style="max-width:20%; height: 10%;" id="profile-image" src="unknown.jpg" alt="Profile Image">';
 
-    }
-
-?>
   <br><br>
   <label>User name : </label>
   <b><label id="userName">${userName} </label></b>
@@ -299,44 +297,10 @@ if (!empty($imageURL)) {
   <b><label id="Email">${email}</label></b>
 </form>
 </div>
-            `;    }
-</script>
+            `;
+            }
+        </script>
 
-
-<script>
-        var empdata;
-
-// function getdata() {
-
-
-    if (empdata && empdata.success && empdata.data) {
-        const employDataMap = empdata.data;
-
-        Object.values(employDataMap).forEach(user => {
-         
-            const markup = `
-            <tr data-toggle='modal' data-target='#employeeModal'> 
-
-                    <td>${user.firstName}</td>
-                    <td>${user.lastName}</td>
-                    <td class="unwantedd">${user.dob}</td>
-                    <td class="unwantedd">${user.gender}</td>
-                    <td>${user.skills}</td>
-                    <td class="unwantedd">${user.email}</td>
-                    <td hidden class="unwantedd">${user.userName}</td>
-                    <td hidden class="unwantedd">${user.image}</td>
-
-                   
-                </tr>`;
-
-            document.getElementById('tableData').insertAdjacentHTML('beforeend', markup);
-        });
-    } else {
-        console.error('Invalid or missing data format', empdata);
-    }
-// }
-     
-    </script>
 </body>
 
 </html>

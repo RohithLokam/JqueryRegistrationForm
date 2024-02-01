@@ -24,6 +24,8 @@ public class EmployDataService {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	@Autowired
+	GenerateKey jwt;
 	
 	 public Map<String, Object> login(EmployData employData) {
 	        String passKey = "Rohit";
@@ -36,9 +38,12 @@ public class EmployDataService {
 	            System.out.println(userName);
 	            System.out.println(password);
 
-	            String sql = "select employId, firstName, lastName, image, password from employ_data where userName=?";
+	            String sql = "select employId, firstName, lastName, password from employ_data where userName=?";
+	            String seequel= "select image from employ_data where userName=?";
 
 	            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, userName);
+	            List<Map<String, Object>> result1 = jdbcTemplate.queryForList(seequel, userName);
+
 
 	            if (!result.isEmpty()) {
 	                Map<String, Object> userData = result.get(0);
@@ -46,22 +51,24 @@ public class EmployDataService {
 
 	                if (bcrypt.matches(password, encryptPassword)) {
 	                    System.out.println("condition2");
+		                Map<String, Object> userData1 = result1.get(0);
 
-	                    String imagePath = (String) userData.get("image");
+	                    String imagePath = (String) userData1.get("image");
 	                    Path path = Paths.get(imagePath);
 	                    byte[] imageBytes = Files.readAllBytes(path);
 	                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
 	                    System.out.println("imagePath: " + imagePath);
-	                    for (Map<String, Object> map : result) {
+	                    for (Map<String, Object> map : result1) {
 	                        map.put("passKey", passKey);
 	                        map.put("image", base64Image);
 	                    }
-
+	                    String token=jwt.generateKey(userName,result);
+	                    response.put("Token", token);
 	                    response.put("success", true);
 	                    response.put("message", "credentials are valid");
-	                    response.put("data", result);
-	                } else {
+	                    response.put("data", result1);
+	                } else { 
 	                    System.out.println("condition1");
 	                    System.out.println(password);
 	                    response.put("success", false);
@@ -74,7 +81,9 @@ public class EmployDataService {
 	                response.put("data", null);
 	            }
 	        } catch (Exception e) {
+                response.put("success", false);
 	            response.put("message", "error: " + e);
+                response.put("data", null);
 	        }
 	        return response;
 	    }
@@ -119,7 +128,7 @@ public class EmployDataService {
 		try {
 		String sql = "select * from employ_data where employId=?";
 		List<Map<String, Object>> resultData = jdbcTemplate.queryForList(sql, id);
-		if(result.size()>0) {
+		if(resultData.size()>0) {
 
 			result.put("success", true);
 		}else {
@@ -131,12 +140,10 @@ public class EmployDataService {
          byte[] imageBytes = Files.readAllBytes(path);
          String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
-         System.out.println("imagePath : "+imagePath);
          for(Map<String,Object> map: resultData) {
 			map.put("image", base64Image);
 		}
 		result.put("data", resultData); 
-		System.out.println(resultData);
 	}
 		catch(Exception e) {
 			result.put("message", "error: "+e.getMessage());

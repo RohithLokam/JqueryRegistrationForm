@@ -5,9 +5,7 @@ session_start();
     exit();
 }
 ?>
-
 <?php include 'home.php'; ?>
-
 <?php
 if (isset($_GET['employId'])) {
     $empId = $_GET['employId'];
@@ -18,6 +16,14 @@ if (isset($_GET['employId'])) {
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_HTTPGET, true); 
+    
+    $headers = array(
+        'Content-Type: application/json',
+        'Authorization: ' . $_SESSION['token'] 
+    );
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
 
     $response = curl_exec($ch);
 
@@ -55,9 +61,9 @@ if (isset($_GET['employId'])) {
 <html>
 
 <head>
-    
+
     <title>PeopleConnect</title>
-   
+
     <style>
         .register {
 
@@ -75,29 +81,33 @@ if (isset($_GET['employId'])) {
             left: 31.5%;
             z-index: 0;
         }
-        .btn-primary:hover{
+
+        .btn-primary:hover {
             opacity: 0.8;
         }
+
         .form-check-inline {
-    display: flex;
-    align-items: center;
-    margin-right: 5px; 
-    margin-bottom: 8px;
-    margin-left: 25%;
-}
-.form-check-inline label {
-    order: -1;
-    margin-right: 36px; 
-}
+            display: flex;
+            align-items: center;
+            margin-right: 5px;
+            margin-bottom: 8px;
+            margin-left: 25%;
+        }
+
+        .form-check-inline label {
+            order: -1;
+            margin-right: 36px;
+        }
+
         h2 {
             color: rgb(177, 9, 73);
         }
 
         label {
             display: inline-block;
-    width: 30%; 
-    text-align: right;
-    margin-top: 10px;
+            width: 30%;
+            text-align: right;
+            margin-top: 10px;
         }
 
         input[type="text"],
@@ -110,7 +120,8 @@ if (isset($_GET['employId'])) {
             box-sizing: border-box;
             display: inline-block;
         }
-         input[type="checkbox"],
+
+        input[type="checkbox"],
         input[type="radio"] {
             margin-right: 8px;
         }
@@ -143,78 +154,86 @@ if (isset($_GET['employId'])) {
             color: red;
             margin-bottom: 10px;
         }
+
         .error-tooltip {
-    position: absolute;
-    margin-top: 5px;
-    background-color: #ff000f; 
-    color: white;
-    padding: 8px;
-    border-radius: 4px;
-    display: none;
-    width:200px;
-    z-index:50;
-}
-.btn-secondary{
-    margin-right: 5px;
-    border-radius: 7px;
-}
+            position: absolute;
+            margin-top: 5px;
+            background-color: #ff000f;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            display: none;
+            width: 200px;
+            z-index: 50;
+        }
+
+        .btn-secondary {
+            margin-right: 5px;
+            border-radius: 7px;
+        }
+
         @media only screen and (max-width: 550px) and (min-width: 270px) {
             .register {
-            text-align: center;
-            border-style: solid;
-            border-radius: 5px;
-            background-color: #f2f2f2;
-            padding: 5px;
-            margin-top: 27%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: absolute;
-            width: 81%;
-            top: 0;
-            left: 14%;
-            z-index: 0;
+                text-align: center;
+                border-style: solid;
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 5px;
+                margin-top: 27%;
+                max-height: 80vh;
+                overflow-y: auto;
+                position: absolute;
+                width: 81%;
+                top: 0;
+                left: 14%;
+                z-index: 0;
+            }
         }
-        }
+
         button {
-  background-color: #df1171;
-  margin-top: 9px;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;  
-  width: 27%;
+            background-color: #df1171;
+            margin-top: 9px;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 27%;
 
-}
-
+        }
     </style>
 </head>
 
 <body>
-<div class="register container">
+    <div class="register container">
         <h2>Profile</h2>
-        <form id="registrationForm" action="update_insert.php" method="POST" onsubmit="return validateForm(event)" enctype="multipart/form-data">
-        <div class="form-group">
+        <form id="registrationForm" action="update_insert.php" method="POST" onsubmit="return validateForm(event)"
+            enctype="multipart/form-data">
+            <div class="form-group">
                 <label for="employId">Employ Id:</label>
-                <input type="text" id="employId" name="employId" class="form-control" placeholder="Enter employId Name" maxlength="66" readonly>
+                <input type="text" id="employId" name="employId" class="form-control" placeholder="Enter employId Name"
+                    maxlength="66" readonly>
                 <div id="empid-error-tooltip" class="error-tooltip"></div><br>
 
             </div>
-        <div class="form-group">
+            <div class="form-group">
                 <label for="userName">User Name:</label>
-                <input type="text" id="userName" name="userName" class="form-control" placeholder="Enter userName Name" maxlength="66" readonly>
+                <input type="text" id="userName" name="userName" class="form-control" placeholder="Enter userName Name"
+                    maxlength="66" readonly>
                 <div id="uname-error-tooltip" class="error-tooltip"></div><br>
 
             </div>
-        <div class="form-group">
+            <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter First Name" maxlength="66">
+                <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter First Name"
+                    maxlength="66">
                 <div id="fname-error-tooltip" class="error-tooltip"></div><br>
 
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name" maxlength="60">
+                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name"
+                    maxlength="60">
                 <div id="lname-error-tooltip" class="error-tooltip"></div><br>
             </div>
             <div class="form-group">
@@ -263,174 +282,132 @@ if (isset($_GET['employId'])) {
                 <!-- <input type="text" id="userName" name="userName" class="form-control" placeholder="Enter Email" hidden> -->
 
             </div>
-           
+
             <div class="form-group">
                 <label for="image">Profile:</label>
                 <input type="file" id="image" name="image" accept="image/*" class="form-control">
                 <div id="imag-error-tooltip" class="error-tooltip"></div><br>
 
             </div>
-            <!-- <div class="btn-group"> -->
-                <!-- <button type="reset" id="clear" onclick="clearErrors()" class="btn btn-secondary">Reset</button> -->
-                <!-- <button style="background-color: #df1171;" type="submit" value="Update" class="btn btn-primary">Update</button> -->
-
-                <button style="  background-color: #df1171;" id="sendButton" type="submit" class="btn btn-primary" onclick="return handleButtonClick()">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>
-            <span class="button-text">Update</span>
-        </button>
-            <!-- </div> -->
-
-            
+            <button style="  background-color: #df1171;" id="sendButton" type="submit" class="btn btn-primary"
+                onclick="return handleButtonClick()">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner"></span>
+                <span class="button-text">Update</span>
+            </button>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-
     <script>
-                $('#spinner').hide();
-                function handleButtonClick() {
-    console.log('Button clicked');
-
-    $('#sendButton').prop('disabled', true);
-
-    $('#spinner').show();
-    // $('#registrationForm').submit();
-
-    setTimeout(function () {
-        $('#sendButton').prop('disabled', false);
-
         $('#spinner').hide();
-        $('#registrationForm').submit();
 
-    }, 3000); 
-    console.log('Form submitted');
-    return true;
-}
-
-
-const employId = <?= json_encode($employId); ?>;
-    const dob = <?= json_encode($dob); ?>;
-    const userName = <?= json_encode($userName); ?>;
-    const firstName = <?= json_encode($firstName); ?>;
-    const lastName = <?= json_encode($lastName); ?>;
-    const email = <?= json_encode($email); ?>;
-    const skills =<?= json_encode($skills); ?>;
-    const gender = <?= json_encode($gender); ?>;
-
-    $("#firstName").val(firstName);
-$("#lastName").val(lastName);
-$("#Email").val(email);
-$("#dob").val(dob);
-$("#employId").val(employId);
-$("#userName").val(userName);
-
-
-const genderElement = $("#" + gender);
-if (genderElement.length) {
-    genderElement.prop("checked", true);
-}
-
-const desiredValuesArray = skills.split(",");
-for (const desiredValue of desiredValuesArray) {
-    const checkbox = $("#" + desiredValue);
-    if (checkbox.length) {
-        checkbox.prop("checked", true);
-    }
-}
-
-
-
-
-
- 
-
-
+        function handleButtonClick() {
+            console.log('Button clicked');
+            $('#sendButton').prop('disabled', true);
+            $('#spinner').show();
+            setTimeout(function() {
+                $('#sendButton').prop('disabled', false);
+                $('#spinner').hide();
+                $('#registrationForm').submit();
+            }, 3000);
+            console.log('Form submitted');
+            return true;
+        }
+        const employId = <?= json_encode($employId); ?> ;
+        const dob = <?= json_encode($dob); ?> ;
+        const userName = <?= json_encode($userName); ?> ;
+        const firstName = <?= json_encode($firstName); ?> ;
+        const lastName = <?= json_encode($lastName); ?> ;
+        const email = <?= json_encode($email); ?> ;
+        const skills = <?= json_encode($skills); ?> ;
+        const gender = <?= json_encode($gender); ?> ;
+        $("#firstName").val(firstName);
+        $("#lastName").val(lastName);
+        $("#Email").val(email);
+        $("#dob").val(dob);
+        $("#employId").val(employId);
+        $("#userName").val(userName);
+        const genderElement = $("#" + gender);
+        if (genderElement.length) {
+            genderElement.prop("checked", true);
+        }
+        const desiredValuesArray = skills.split(",");
+        for (const desiredValue of desiredValuesArray) {
+            const checkbox = $("#" + desiredValue);
+            if (checkbox.length) {
+                checkbox.prop("checked", true);
+            }
+        }
         let count = 0;
 
         function validateForm(event) {
-            count = 0; 
-
+            count = 0;
             firstNameValidation();
             lastNameValidation();
             dobValidation();
             skillsValidation();
             emailValidation();
             genderValidation();
-
             console.log(count);
             if (count === 6) {
                 return true;
-
-} 
-        else {
+            } else {
                 alert("Form validation failed. Please check the errors.");
                 return false;
             }
-            }
-
-
-           
-    $(document).ready(function() {
-        $("#firstName").on("blur", function() {
-            firstNameValidation();
-        });
-        $("#lastName").on("blur", function() {
-            lastNameValidation();
-        });
-        $("#dob").on("blur", function() {
-            dobValidation();
-        });
-        $("#Email").on("blur", function() {
-            emailValidation();
-        });
-        $("input[name='skills[]']").on("change", function() {
-        skillsValidation();
-        });
-        $("input[name='gender']").on("change", function() {
-        skillsValidation();
-        });
-        
-    });
-
-
-            function firstNameValidation() {
-        const firstName = $("#firstName").val();
-        const namePattern = /^[A-Za-z]+$/;
-        const fnameElement = $("#fname-error-tooltip");
-
-        if (firstName === "") {
-            fnameElement.text("First name can't be empty");
-            fnameElement.show();
-        } else if (firstName.length < 3 || firstName.length > 60) {
-            fnameElement.text("Name should be between 3 and 60 characters");
-            fnameElement.show();
-        } else if (!firstName.match(namePattern)) {
-            fnameElement.text("Please enter only characters");
-            fnameElement.show();
-        } else {
-            count++;
-            fnameElement.text("");
-            fnameElement.hide();
         }
-    }
+        $(document).ready(function() {
+            $("#firstName").on("blur", function() {
+                firstNameValidation();
+            });
+            $("#lastName").on("blur", function() {
+                lastNameValidation();
+            });
+            $("#dob").on("blur", function() {
+                dobValidation();
+            });
+            $("#Email").on("blur", function() {
+                emailValidation();
+            });
+            $("input[name='skills[]']").on("change", function() {
+                skillsValidation();
+            });
+            $("input[name='gender']").on("change", function() {
+                skillsValidation();
+            });
+        });
 
+        function firstNameValidation() {
+            const firstName = $("#firstName").val();
+            const namePattern = /^[A-Za-z]+$/;
+            const fnameElement = $("#fname-error-tooltip");
+            if (firstName === "") {
+                fnameElement.text("First name can't be empty");
+                fnameElement.show();
+            } else if (firstName.length < 3 || firstName.length > 60) {
+                fnameElement.text("Name should be between 3 and 60 characters");
+                fnameElement.show();
+            } else if (!firstName.match(namePattern)) {
+                fnameElement.text("Please enter only characters");
+                fnameElement.show();
+            } else {
+                count++;
+                fnameElement.text("");
+                fnameElement.hide();
+            }
+        }
 
-           
-
-        function lastNameValidation(){
-
-            const lastName=$("#lastName").val();
-            const namePattern=/^[A-Za-z]+$/;
-            const lnameElement=$("#lname-error-tooltip");
-
-            if(lastName===""){
+        function lastNameValidation() {
+            const lastName = $("#lastName").val();
+            const namePattern = /^[A-Za-z]+$/;
+            const lnameElement = $("#lname-error-tooltip");
+            if (lastName === "") {
                 lnameElement.text("Last name can't be empty");
                 lnameElement.show();
-            }else if (lastName.length<3 || lastName.length>60 ) {
+            } else if (lastName.length < 3 || lastName.length > 60) {
                 lnameElement.text("name should be below 60 and above 3 charactesr");
                 lnameElement.show();
-            }
-             else if (!lastName.match(namePattern)) {
+            } else if (!lastName.match(namePattern)) {
                 lnameElement.text("Please enter only characters");
                 lnameElement.show();
             } else {
@@ -440,48 +417,41 @@ for (const desiredValue of desiredValuesArray) {
             }
         }
 
-
-
-
         function dobValidation() {
-    const dobInput = $("#dob").val();
-    const today = new Date();
-    const dob = new Date(dobInput);
-    const dateElement = $("#date-error-tooltip");
-
-    if (dobInput === "") {
-        dateElement.text("Date of birth is required");
-        dateElement.show();
-    } else if (dob > today) {
-        dateElement.text("Date of birth must be in the past");
-        dateElement.show();
-    } else {
-        count++;
-        dateElement.text("");
-        dateElement.hide();
-    }
-}
+            const dobInput = $("#dob").val();
+            const today = new Date();
+            const dob = new Date(dobInput);
+            const dateElement = $("#date-error-tooltip");
+            if (dobInput === "") {
+                dateElement.text("Date of birth is required");
+                dateElement.show();
+            } else if (dob > today) {
+                dateElement.text("Date of birth must be in the past");
+                dateElement.show();
+            } else {
+                count++;
+                dateElement.text("");
+                dateElement.hide();
+            }
+        }
 
         function skillsValidation() {
-    const checkedSkills = $("input[name='skills[]']:checked");
-    const skillElement = $("#skill-error-tooltip");
+            const checkedSkills = $("input[name='skills[]']:checked");
+            const skillElement = $("#skill-error-tooltip");
+            if (checkedSkills.length < 2) {
+                skillElement.text("Please select at least 2 skills");
+                skillElement.show();
+            } else {
+                count++;
+                skillElement.text("");
+                skillElement.hide();
+            }
+        }
 
-    if (checkedSkills.length < 2) {
-        skillElement.text("Please select at least 2 skills");
-        skillElement.show();
-    } else {
-        count++;
-        skillElement.text("");
-        skillElement.hide();
-    }
-}
-
-    
         function emailValidation() {
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             const email = $("#Email").val();
-            emailElement=$("#email-error-tooltip");
-
+            emailElement = $("#email-error-tooltip");
             if (email === "") {
                 emailElement.text("Email can't be empty");
                 emailElement.show();
@@ -495,26 +465,18 @@ for (const desiredValue of desiredValuesArray) {
             }
         }
 
-        
-
         function genderValidation() {
-    const selectedGender = $("input[name='gender']:checked");
-    let genderElement=$("#gender-error-tooltip");
-
-    if (selectedGender.length === 0) {
-        genderElement.text("Please select a gender");
-        genderElement.show();
-    } else {
-        count++;
-        genderElement.text("");
-        genderElement.hide();
-    }
-}
-
-
-
-
-
+            const selectedGender = $("input[name='gender']:checked");
+            let genderElement = $("#gender-error-tooltip");
+            if (selectedGender.length === 0) {
+                genderElement.text("Please select a gender");
+                genderElement.show();
+            } else {
+                count++;
+                genderElement.text("");
+                genderElement.hide();
+            }
+        }
     </script>
 </body>
 
