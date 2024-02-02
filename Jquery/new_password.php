@@ -76,6 +76,8 @@ if (isset($_GET['otp_verified_success']) && $_GET['otp_verified_success'] === 't
     echo "</script>";
 }
 ?>
+<?php include 'api.php'  ?>
+
 <?php
 // session_start();
 $Email = $_SESSION['Email'];
@@ -83,7 +85,7 @@ $Email = $_SESSION['Email'];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
-    $api_url = "http://172.17.13.138:8080/password_update";
+    $api_url = "$root/password_update";
 
     $data = array("password" => $password, "email" => $Email);
     $options = array(

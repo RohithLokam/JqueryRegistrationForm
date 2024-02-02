@@ -1,3 +1,5 @@
+<?php include 'api.php'  ?>
+
 <?php
 session_start();
 
@@ -48,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'file'      => $image,
     ];
 
-    $api_url = 'http://172.17.13.138:8080/employ_data';
+    $api_url = `$root/employ_data`;
     $ch = curl_init($api_url);
 
     // $headers = array(

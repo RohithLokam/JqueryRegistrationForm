@@ -95,7 +95,7 @@ public class EmployDataServiceInsert {
 	            String[] shortMonths = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 	            String month = shortMonths[LocalDate.now().getMonthValue() - 1];
 
-	            Path imageDirectory =Path.of("C:\\Users\\mcconf\\Downloads\\employ_images\\"+year+"\\"+month);
+	            Path imageDirectory =Path.of("C:\\Users\\mcconf\\Downloads\\employ_images\\"+year+"\\"+month+"\\"+localDate);
 	            
 	            Files.createDirectories(imageDirectory);  
 

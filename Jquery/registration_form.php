@@ -1,10 +1,13 @@
 <?php include 'layout_extra.php'; ?>
 
+<?php include 'api.php'  ?>
+
 <head>
 
     <title>PeopleConnect</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -303,7 +306,7 @@
     function generateEmail() {
         const firstName = document.getElementById('firstName').value;
         const lastName = document.getElementById('lastName').value;
-        fetch(`http://172.17.13.138:8080/user_name_check/${firstName}/${lastName}`)
+        fetch(`<?php echo $root ?>/user_name_check?firstName=${firstName}&lastName=${lastName}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);

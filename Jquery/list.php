@@ -7,15 +7,18 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 ?>
 
+
+
 <?php include 'layout.php'; ?>
+
+<?php include 'api.php'  ?>
 
 <?php
 
 $passKey=$_SESSION['passKey'];
 
 
-
-$url = "http://172.17.13.138:8080/employ_data/$passKey";
+$url = "$root/employ_data/$passKey";
 
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -1,3 +1,5 @@
+<?php include 'api.php'  ?>
+
 <?php
 header('Content-Type: application/json');
 
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['g-recaptcha-response'] != "
         exit();
     }
 
-    $api_url = 'http://172.17.13.138:8080/employ_data';
+    $api_url = `$root/employ_data`;
     $ch = curl_init($api_url);
 
     $postData = [

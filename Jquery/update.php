@@ -6,11 +6,13 @@ session_start();
 }
 ?>
 <?php include 'home.php'; ?>
+<?php include 'api.php'  ?>
+
 <?php
 if (isset($_GET['employId'])) {
     $empId = $_GET['employId'];
 
-    $url = "http://172.17.13.138:8080/employ_data_list?employId=$empId";
+    $url = "$root/employ_data_list?employId=$empId";
 
     $ch = curl_init($url);
 

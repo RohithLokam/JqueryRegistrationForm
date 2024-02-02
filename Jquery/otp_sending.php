@@ -35,6 +35,9 @@ if (isset($_GET['otp_sending_success']) && $_GET['otp_sending_success'] === 'tru
   echo "</script>";
 }
 ?>
+
+<?php include 'api.php'  ?>
+
 <?php
 session_start();
 
@@ -42,7 +45,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST["Email"];
 
-  $api_url = "http://172.17.13.138:8080/sendmail";
+  $api_url = "$root/sendmail";
 
   $data = array("email" => $username);
   $options = array(

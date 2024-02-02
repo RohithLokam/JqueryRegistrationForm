@@ -4,11 +4,14 @@
     header("Location: index.php");
     exit();
 }
+
 ?>
 <?php
-  // echo "<script>console.log('" . $_SESSION['test1'] . "');</script>";
-  // echo "<script>console.log('" . $_SESSION['test2'] . "');</script>";
-  // echo "<script>console.log('" . $_SESSION['test3'] . "');</script>";
+echo "<script>";
+echo "localStorage.setItem('sessionId', JSON.stringify({\"FName\":\"" . $_SESSION['firstName'] . "\", \"LName\":\"" . $_SESSION['lastName'] . "\", \"loginId\":\"" . $_SESSION['username'] . "\"}));";
+echo "localStorage.setItem('token', '" . $_SESSION['token'] . "');";
+echo "</script>";
+
 if (isset($_GET['login_success']) && $_GET['login_success'] === 'true') {
 
 
@@ -139,6 +142,49 @@ else if (isset($_GET['reset_success']) && $_GET['reset_success'] === 'true') {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
+ 
+  <script>
+ 
+
+    var timeout = 10 * 60 * 1000;
+    var idleTimeout = 3 * 60 * 1000;
+    var timer;
+    var idleTimer;
+    function checkSessionTimeout() {
+      var currentTime = new Date().getTime();
+      var startTime = <?php echo $_SESSION['start_time']; ?> * 1000;
+      var elapsedTime = currentTime - startTime;
+      if (elapsedTime >= timeout) {
+        redirectToLogout();
+      }
+    }
+
+    function redirectToLogout() {
+      window.location.href = "logout.php";
+    }
+
+    function startIdleTimer() {
+      idleTimer = setTimeout(redirectToLogout, idleTimeout);
+    }
+
+    function resetIdleTimer() {
+      clearTimeout(idleTimer);
+      startIdleTimer();
+    }
+
+    function resetTimers() {
+      clearTimeout(timer);
+      clearInterval(idleTimer);
+      timer = setTimeout(redirectToLogout, timeout);
+      startIdleTimer();
+    }
+    document.addEventListener("mousemove", resetIdleTimer);
+    document.addEventListener("keypress", resetIdleTimer);
+    document.addEventListener("scroll", resetIdleTimer);
+
+    resetTimers();
+  </script>
+
   <style>
     header {
       position: sticky;

@@ -78,6 +78,8 @@ echo "</script>";
 }
 ?>
 
+<?php include 'api.php'  ?>
+
 <?php
 // session_start();
 $otpp=$_SESSION['otp'];
@@ -87,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = $_POST["input1"] . $_POST["input2"] . $_POST["input3"] . $_POST["input4"]; 
 
 
-    $api_url = "http://172.17.13.138:8080/otp_verification";
+    $api_url = "$root/otp_verification";
 
     $data = array("otp" => $otp,"user_otp" => $otpp );
     $options = array(

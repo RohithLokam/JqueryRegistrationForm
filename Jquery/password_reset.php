@@ -50,6 +50,9 @@ echo "</script>";
 ?>
 <?php include 'home.php'; ?>
 
+
+<?php include 'api.php'  ?>
+
 <?php
 $passwd=$_SESSION['password'];
 $empId=$_SESSION['employId'];
@@ -58,12 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $employId = $empId;
     $password = $_POST["confirmpassword"];
 
-    $api_url = "http://172.17.13.138:8080/reset_password";
+    $api_url = "$root/reset_password";
 
     $data = array("employId" => $employId, "password" => $password);
     $options = array(
         'http' => array(
-            'header'  => "Content-type: application/json\r\n",
+            'header'  =>  'Content-Type: application/json' . "\r\n" .
+            'Authorization: ' . $_SESSION['token'],
             'method'  => 'POST',
             'content' => json_encode($data),
         ),
@@ -211,19 +215,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </a><br><br>
         <h2 style="color: rgb(177, 9, 73);"> Reset Password </h2>
         <form action="" method="post" onsubmit="return validateForm()">
-            <label>OldPassword: </label><br>
             <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter old password">
             <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="9%" height="14%"
                 style="z-index:3; margin-left: 57.6%; margin-top:-27%; display:inline; vertical-align: middle;"
                 id="tp1">
             <p id="oldpasswordMessage"></p>
-            <label>NewPassword: </label><br>
             <input type="password" id="newpassword" name="newpassword" placeholder="Enter new password">
             <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="9%" height="14%"
                 style="z-index:3; margin-left: 57.6%; margin-top:-27%; display:inline; vertical-align: middle;"
                 id="tp2">
             <p id="newpasswordMessage"></p>
-            <label>ConfirmPassword: </label><br>
             <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm new password"><br>
             <img src="https://clipground.com/images/password-eye-icon-png-2.png" width="9%" height="14%"
                 style="z-index:3; margin-left: 57.6%; margin-top:-27%; display:inline; vertical-align: middle;"

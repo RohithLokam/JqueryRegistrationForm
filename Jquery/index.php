@@ -101,6 +101,8 @@ if (isset($_GET['success']) && $_GET['success'] === 'true') {
 
 ?>
 
+<?php include 'api.php'  ?>
+
 <?php
 session_start();
 
@@ -109,10 +111,12 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
+    $_SESSION['username'] = $username;
+
     $_SESSION['password'] = $password;
 
 
-    $api_url = "http://172.17.13.138:8080/employ";
+    $api_url = "$root/employ";
 
     $data = array("userName" => $username, "password" => $password);
     $options = array(
@@ -160,6 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user = $data['data'][0];
                 $_SESSION['image'] = $user['image'];
                 $_SESSION['passKey'] = $user['passKey'];
+                $current_timestamp = time();
+                $_SESSION['start_time'] = $current_timestamp;
             }
             header("Location: home.php?login_success=true");
             exit();

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,25 +43,17 @@ public class EmployDataController {
 		return employDataService.update(file.getBytes(), file.getOriginalFilename(), employId, userName, firstName, lastName, email, dob, skills, gender);
 	}
 	@GetMapping("employ_data/{key}")
-	public Map<String, Object> listing(@RequestHeader(value = "authorization", defaultValue = "") String auth, @PathVariable String key) {
-	    try {
-//	        jwtUtils.verify(auth);
+	public Map<String, Object> listing(@PathVariable String key) throws IOException {
 	        return employDataService.list(key);
-	    } catch (Exception e) {
-	        Map<String, Object> response = new HashMap<>();
-	        response.put("success", false);
-	        response.put("message", "Access Denied");
-	        response.put("data", null);
-	        return response;
-	    }
+	    
 	}
 	
 	@GetMapping("employ_data_list")
 	public Map<String, Object> selection(@RequestParam int employId){	
 		return employDataService.view(employId);
 	}
-	@GetMapping("user_name_check/{firstName}/{lastName}")
-	public Map<String, String> userNameChecking(@PathVariable String firstName,@PathVariable String lastName){
+	@GetMapping("user_name_check")
+	public Map<String, String> userNameChecking(@RequestParam String firstName,@RequestParam String lastName){
 		return employDataServiceInsert.UserNameCheck(firstName,lastName);
 	}
 	@GetMapping("select")
@@ -89,6 +80,25 @@ public class EmployDataController {
 	public Map<String,Object> reset_password(@RequestBody EmployData employData) {
 		return employDataService.resetPassword(employData);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	@PostMapping("files")
 //    public Map<String, Object> handleFileUpload(@RequestPart("file") MultipartFile file) throws IOException {
 //        return employDataService.saveFile(file.getBytes(), file.getOriginalFilename());
