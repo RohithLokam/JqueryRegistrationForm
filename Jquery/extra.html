@@ -1,0 +1,475 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html class="no-js">
+
+<head>
+    <title>Secure Sign In</title>
+
+
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <link rel="shortcut icon" href="/static/images/GoToFavIcon.ico" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="/static/css/login.css?v=062621" />
+
+
+    <style type="text/css">
+        #submit,
+        #continue-button,
+        #next-button,
+        #submit-button {
+            background-color: #000000;
+        }
+    </style>
+
+
+
+
+
+    <style type="text/css">
+        #submit:hover,
+        #continue-button:hover,
+        #submit:focus,
+        #continue-button:focus,
+        #next-button:hover,
+        #next-button:focus {
+            background-color: #2a3238;
+        }
+    </style>
+
+
+
+</head>
+
+<body id="login">
+    <div class="center">
+
+        <script type="text/javascript" src="/static/scripts/castle.browser.js"></script>
+        <script type="text/javascript">
+            if (document.all && !document.addEventListener) {
+            window.location.href = "ielt9";
+        }
+        </script>
+
+
+
+
+
+
+        <input type="hidden" id="samlUrl" value="https://authentication.logmeininc.com/saml/sp/client?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode"/>
+        <form id="credentials" novalidate="true"
+            action="/login?service=https%3A%2F%2Fauthentication.logmeininc.com%2Foauth%2Fapprove%3Fclient_id%3Db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3Dcode"
+            method="post" onsubmit="return checkView()">
+            <input type="hidden" id="castle_request_token" name="castle_request_token"/>
+            <div class="row">
+                <div id="productLogo" class="col-xs-12">
+
+
+                    <img src="/static/images/GoTo_logo.svg" alt="GoTo">
+                </div>
+                <div class="col-xs-2"></div>
+            </div>
+
+
+
+
+            <!-- @TODO - hide this section if there is an error message and refactor error messages to avoid confusion
+        during social linkage flow -->
+
+
+            <div class="errorContent row">
+
+
+            </div>
+
+
+
+
+
+            <div class="slide-in from-left" id="step1" style="padding: 0 5px">
+                <div id="step1content">
+
+                    <div class="fieldContainerFirst" id="emailField">
+                        <label class="fieldLabel" for="emailAddress">Email address</label>
+                        <input id="emailAddress" name="emailAddress" title="Email" name="emailAddress" type="email" aria-label="Email address" value=""/>
+                    </div>
+
+                    <div id="continuediv" class="row">
+                        <div class="col-xs-12">
+                            <input id="next-button" name="next-button" type="button" class="btn btn-block"
+                               value="Next" onclick="return checkLoginOptions()">
+
+                        </div>
+                    </div>
+
+                    <p id="samlalert" name="samlalert" class="hidden">We'll take you to your company's sign-in page.</p>
+
+                    <div id="samlcontinue" name="samlcontinue" class="row hidden">
+                        <div class="col-xs-12">
+                            <input id="continue-button" name="continue-button" type="button" class="btn btn-block"
+                               value="Continue"
+                               onclick="navToSamlSsoLoginUrl()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-in from-right hidden" id="step2" style="padding: 0 5px">
+                <div class="slide-in-content" id="step2content">
+
+                    <div id="continueWith" class="continueWith hidden">
+                        <div style="display: table-row">
+                            <div class="avatarContainer" style="display: table-cell; width: 54px">
+                                <img class="avatar" src="/static/images/avatar-medium.jpg"/>
+                                <img class="avatar" id="avatar" onerror="this.style.display='none'"
+                                 src="/static/images/avatar-medium.jpg"/>
+                            </div>
+                            <div class="signInTextContainer" style="display: table-cell">
+                                <span id="continueSignInText" class="continueSignInText"></span><br/>
+                                <a href="javascript:void(0)" onclick="return moveToEmailStep()">
+                                    Not you?
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="fieldContainer hidden" id="passwordField">
+                        <label for="password" class="fieldLabel">Password</label>
+                        <input id="password" name="password" name="password" aria-label="Password" type="password" value="" autocomplete="off"/>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div id="forgotPaswordDiv">
+                                <a id="forgotPasswordLink"
+                                    href="https://authentication.logmeininc.com/pwdrecovery/?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode&tenantName=%24default">
+                                    Forgot password?
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div id="submitdiv" class="row">
+                                <div class="col-xs-12">
+                                    <input id="submit" name="submit" type="submit" class="btn btn-block submit"
+                                       accesskey="l"
+                                       value="Sign in">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sclLinksSpacer" class="row sclLinksSpacer"></div>
+                    <div class="row sclLinks" id="sclLinks">
+                        <div class="col-xs-6" id="signin_companyId">
+                            <div role="button" title="Sign in with Company ID" class="social-login-cta"
+                                id="companyIDButton" tabIndex="0">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="compid-login-button-cell" style="width: 40px">
+                                                <i class="togo-icon togo-icon-id-card"></i>
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+        Sign in with Company ID
+        </span>
+                                                        <span class="shortOptionLabel">
+        Company ID
+        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Do not show the social icon for which the user is trying to signup or link -->
+
+
+
+                        <div class="col-xs-6" id="signin_facebook">
+                            <div role="button" title="Sign in with Facebook" class="social-login-cta" id="facebookLogin"
+                                tabIndex="0"
+                                linkTo="https://authentication.logmeininc.com/social/extoauth/signin/facebook/initiate?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fb-login-button-cell">
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+                Sign in with Facebook
+                </span>
+                                                        <span class="shortOptionLabel">
+                Sign in
+                </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-xs-6" id="signin_lastpass">
+                            <div role="button" title="Sign in with LastPass" class="social-login-cta" id="lastpassLogin"
+                                tabIndex="0"
+                                linkTo="https://authentication.logmeininc.com/social/extoauth/signin/lastpass/initiate?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="lastpass-login-button-cell">
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+                Sign in with LastPass
+                </span>
+                                                        <span class="shortOptionLabel">
+                Sign in
+                </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-xs-6" id="signin_apple">
+                            <div role="button" title="Sign in with Apple" class="social-login-cta" id="appleLogin"
+                                tabIndex="0"
+                                linkTo="https://authentication.logmeininc.com/social/extoauth/signin/apple/initiate?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="apple-login-button-cell">
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+                Sign in with Apple
+                </span>
+                                                        <span class="shortOptionLabel">
+                Sign in
+                </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-xs-6" id="signin_google">
+                            <div role="button" title="Sign in with Google" class="social-login-cta" id="googleLogin"
+                                tabIndex="0"
+                                linkTo="https://authentication.logmeininc.com/social/extoauth/signin/google/initiate?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="google-login-button-cell">
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+                Sign in with Google
+                </span>
+                                                        <span class="shortOptionLabel">
+                Sign in
+                </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-xs-6" id="signin_linkedin">
+                            <div role="button" title="Sign in with LinkedIn" class="social-login-cta" id="linkedinLogin"
+                                tabIndex="0"
+                                linkTo="https://authentication.logmeininc.com/social/extoauth/signin/linkedin/initiate?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="linkedin-login-button-cell">
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+                Sign in with LinkedIn
+                </span>
+                                                        <span class="shortOptionLabel">
+                Sign in
+                </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-xs-6" id="signin_microsoft">
+                            <div role="button" title="Sign in with Microsoft" class="social-login-cta"
+                                id="microsoftLogin" tabIndex="0"
+                                linkTo="https://authentication.logmeininc.com/social/extoauth/signin/microsoft/initiate?service=https%3a%2f%2fauthentication.logmeininc.com%2foauth%2fapprove%3fclient_id%3db602ec56-cdf4-43f6-b5cf-89220467d5a8%26response_type%3dcode">
+                                <table class="social-login-table" padding="0" spacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="microsoft-login-button-cell">
+                                            </td>
+                                            <td class="login-text-cell">
+                                                <div class="login-text-container-div">
+                                                    <div class="login-text-div">
+                                                        <span class="fullOptionLabel">
+                Sign in with Microsoft
+                </span>
+                                                        <span class="shortOptionLabel">
+                Sign in
+                </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="padding: 0 5px">
+                <div class="row" id="otherLinks">
+
+
+
+
+
+                    <div id="rememberMeCheckbox" class="col-xs-6">
+                        <label class="checkbox-label">
+                            <input id="rememberMe" name="rememberMe" type="checkbox" checked>
+                            Keep me signed in
+                        </label>
+                    </div>
+
+
+                    <div id="troubleCanvas" class="col-xs-6">
+                        <div class="support">
+                            <a href="https://support.goto.com/contactus" target="_blank">
+                                <span class="lineBig support">
+            Support
+            </span>
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+        </form>
+
+        <script type="text/javascript">
+            Castle.configure({pk: 'pk_fpCnqdxvVZcJtLsGHuNbKYiyzxCgupMA'});
+        var missingEmailErrorText = "Enter your email address.";
+        var invalidEmailErrorText = "Enter a valid email address.";
+        var invalidBoldAIUsernameErrorText = "Enter a valid email or username.";
+        var missingPasswordErrorText = "Enter your password.";
+        var continueSigninText = "Sign in for <b>{0}</b>";
+        
+        
+        var avatarURL = "https://avatars.servers.getgo.com/emails/{0}/medium.jpg";
+        var twoStepInInfofoUrl = "";
+        var hideRememberme = "false";
+        var isLoginPage = true;
+        var allowUserNameLogin = "true" === "";
+        var boldaistyleusernamerequired = "true" === "";
+
+        // focus function to be used by Endpoint
+        function focusEmailAddress() {
+            var ea = document.getElementById('emailAddress');
+            if (ea && document.activeElement !== ea) {
+                ea.focus();
+            }
+        }
+
+        function focuseIfNoErrors() {
+            var hasServerSideErrors = document.getElementsByTagName('alertLight-Error').length;
+            if (!hasServerSideErrors) {
+                focusEmailAddress();
+            }
+        }
+        </script>
+    </div>
+
+
+
+
+
+    <div class="row footer">
+        <div class="copyright col-xs-12">
+
+
+
+
+
+            © 1997-2024 GoTo Group, Inc. All rights reserved.
+        </div>
+    </div>
+    <script type="text/javascript" src="/static/scripts/login.js?r=031122"></script>
+
+</body>
+
+</html>

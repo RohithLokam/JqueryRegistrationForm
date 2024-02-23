@@ -95,7 +95,7 @@ public class EmployDataServiceInsert {
 	            String[] shortMonths = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 	            String month = shortMonths[LocalDate.now().getMonthValue() - 1];
 
-	            Path imageDirectory =Path.of("C:\\Users\\mcconf\\Downloads\\employ_images\\"+year+"\\"+month+"\\"+localDate);
+	            Path imageDirectory =Path.of("C:\\Users\\rlokam1\\Downloads\\employ_images\\"+year+"\\"+month+"\\"+localDate);
 	            
 	            Files.createDirectories(imageDirectory);  
 
@@ -108,7 +108,7 @@ public class EmployDataServiceInsert {
 			String sql="insert into employ_data (firstName,lastName,userName,dob,gender,image,skills,email,password,addDate,modifyDate,createdBy)values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			int i=jdbcTemplate.update(sql,firstName,lastName,userName,dob,gender,image_path,skills,officialMail,encryprtpassword,addDate,modifyDate,createdBy);
 			if(i>0) {
-	            jdbcTemplate.update("INSERT INTO files (userName,file_name) VALUES (?,?)", userName,image_path);
+	            jdbcTemplate.update("INSERT INTO files(userName,file_name) VALUES (?,?)", userName,image_path);
 	            jdbcTemplate.update("INSERT INTO testing (firstName, lastName, userName, email, password) VALUES (?,?,?,?,?)", firstName, lastName, userName, officialMail, password);
 	            @SuppressWarnings("unused")
 				String mail=htmlTemplate( fileData,  fileName,  firstName,  lastName,  userName,  officialMail,  dob,  skills,  gender);

@@ -158,6 +158,9 @@ public class EmployDataService {
 
 	public Map<String, Object> update(byte[] fileData, String fileName,int employId, String userName, String firstName,String lastName, String email, String dob, String skills, String gender){
 		Map<String, Object> response=new HashMap<String, Object>();
+		response.put("data", null);
+		response.put("success", false);
+		response.put("message", "data not updated");
 		try {	
 			LocalDate date=LocalDate.now();
 			String addDate=date.toString();
@@ -176,7 +179,7 @@ public class EmployDataService {
 			String[] shortMonths = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 			String month = shortMonths[LocalDate.now().getMonthValue() - 1];
 
-			Path imageDirectory =Path.of("C:\\Users\\mcconf\\Downloads\\employ_images\\"+year+"\\"+month+"\\"+localDate);
+			Path imageDirectory =Path.of("C:\\Users\\rlokam1\\Downloads\\employ_images\\"+year+"\\"+month+"\\"+localDate);
 
 
 			Files.createDirectories(imageDirectory);  
@@ -210,6 +213,7 @@ public class EmployDataService {
 			response.put("success", false);
 			response.put("message", e.toString());
 		}
+		System.out.println(response);
 		return response;
 	}
 

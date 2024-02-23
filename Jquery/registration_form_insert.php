@@ -1,6 +1,7 @@
 <?php include 'api.php'  ?>
-
 <?php
+
+
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['g-recaptcha-response'] != "") {
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['g-recaptcha-response'] != "
         exit();
     }
 
-    $api_url = `$root/employ_data`;
+    $api_url = $root.'/employ_data';
     $ch = curl_init($api_url);
 
     $postData = [
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['g-recaptcha-response'] != "
 
     $response = curl_exec($ch);
     curl_close($ch);
-
+echo $response;
     $decoded_response = json_decode($response, true);
 
     if ($decoded_response && isset($decoded_response['success'])) {
